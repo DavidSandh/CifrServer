@@ -1,6 +1,5 @@
 package serverMain;
 
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,8 +21,9 @@ public class Server implements Runnable {
 		serverSocket = new ServerSocket(port);
 		server.start();
 	}
-	public void sendMessage(String message){
-		for(int i = 0; i<list.size();i++){
+
+	public void sendMessage(String message) {
+		for (int i = 0; i < list.size(); i++) {
 			ClientHandler sendTo = list.get(i);
 			sendTo.writeMessage(message);
 		}
@@ -31,18 +31,18 @@ public class Server implements Runnable {
 
 	@Override
 	public void run() {
-		 try{
-			 while(true){
-				 Socket socket = serverSocket.accept();
-				 ClientHandler newCLient = new ClientHandler(socket);
-				 newCLient.start();
-				 list.add(newCLient);
-				 
-			 }
-				 
-			 }catch(Exception e){
-				 
-			 }
+		try {
+			while (true) {
+				Socket socket = serverSocket.accept();
+				ClientHandler newCLient = new ClientHandler(socket);
+				newCLient.start();
+				list.add(newCLient);
+
+			}
+
+		} catch (Exception e) {
+
+		}
 	}
 
 	private class ClientHandler extends Thread {
@@ -65,29 +65,28 @@ public class Server implements Runnable {
 
 		public void run() {
 			String message;
-			while(true){
+			while (true) {
 				try {
-			
-				message = (String)input.readObject();
-				sendMessage(message);
-				
-			} catch (ClassNotFoundException e) {
-				 
-				e.printStackTrace();
-			} catch (IOException e) {
-				 
-				e.printStackTrace();
+					message = (String) input.readObject();
+					sendMessage(message);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}}
-		private void writeMessage(String message){
+		}
+
+		private void writeMessage(String message) {
 			try {
 				output.writeObject(message);
 			} catch (IOException e) {
-				 
+
 				e.printStackTrace();
 			}
 		}
 	}
+
 	private void startLog() {
 		log = Logger.getLogger("Log");
 		try {
@@ -100,7 +99,7 @@ public class Server implements Runnable {
 		fileHandle.setFormatter(new SimpleFormatter());
 		log.addHandler(fileHandle);
 	}
-	
+
 	private void logHandler(String logMessage) {
 		log.info(logMessage + "\n");
 	}
