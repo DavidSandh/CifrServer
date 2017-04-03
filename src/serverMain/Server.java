@@ -65,10 +65,10 @@ public class Server implements Runnable {
 			sendTo.writeMessage(message);
 		}
 	}
-/**
- *  Run method which waits for a serverSocket to accept. Adds the client to a list
- *  and starts a thread to handle the client.
- */
+	/**
+	 *  Run method which waits for a serverSocket to accept. Adds the client to a list
+	 *  and starts a thread to handle the client.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -83,19 +83,19 @@ public class Server implements Runnable {
 
 		}
 	}
-/**
- * inner class which handles clients.
- * @author Lucas Knutsäter & David Sandh
- *
- */
+	/**
+	 * inner class which handles clients.
+	 * @author Lucas Knutsäter & David Sandh
+	 *
+	 */
 	private class ClientHandler extends Thread {
 		private Socket socket;
 		private ObjectOutputStream output;
 		private ObjectInputStream input;
-/**
- * Controller which opens new streams
- * @param socket Socket which to open stream on.
- */
+		/**
+		 * Controller which opens new streams
+		 * @param socket Socket which to open stream on.
+		 */
 		public ClientHandler(Socket socket) {
 			this.socket = socket;
 			try {
@@ -108,9 +108,9 @@ public class Server implements Runnable {
 			}
 
 		}
-/**
- * Placeholder method. Was used for demo. Will be removed/remade.
- */
+		/**
+		 * Placeholder method. Was used for demo. Will be removed/remade.
+		 */
 		public void run() {
 			String message;
 			while (true) {
@@ -124,10 +124,10 @@ public class Server implements Runnable {
 				}
 			}
 		}
-/**
- * Placeholder method. Was used for demo. Will b e removed/remade.
- * @param message
- */
+		/**
+		 * Placeholder method. Was used for demo. Will b e removed/remade.
+		 * @param message
+		 */
 		private void writeMessage(String message) {
 			try {
 				output.writeObject(message);
