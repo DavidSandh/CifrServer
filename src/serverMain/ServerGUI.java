@@ -9,14 +9,18 @@ public class ServerGUI extends JPanel{
 	private JButton btnStartStop = new JButton("Start server");
 	private JTextArea txtLog = new JTextArea();
 	private Font font1 = new Font("Arial", Font.PLAIN,22);
+	private ServerController serverController;
 	
 	public ServerGUI() {
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(800,600));
 		add(mainPanel(), BorderLayout.CENTER);
 		add(buttonPanel(), BorderLayout.NORTH);
+		showFrame();
 	}
-	
+	public void addController(ServerController serverController) {
+		this.serverController = serverController;
+	}
 	private JPanel buttonPanel() {
 		JPanel panel = new JPanel();
 		btnStartStop.addActionListener(listener);
@@ -36,15 +40,7 @@ public class ServerGUI extends JPanel{
 	public void showFrame() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ServerGUI());
-		frame.pack();
-		frame.setVisible(true);
-	}
-	
-	public static void main (String[] args) {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ServerGUI());
+		frame.add(this);
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -53,10 +49,10 @@ public class ServerGUI extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == btnStartStop) {
 				if(btnStartStop.getText().equals("Start server")) {
-					controller.startServer();
+					serverController.startServer();
 					btnStartStop.setText("Stop server");
 				} else if (btnStartStop.getText().equals("Stop server")) {
-					controller.stopServer();
+					serverController.stopServer();
 					btnStartStop.setText("Start server");
 				}
 			}

@@ -14,12 +14,24 @@ public class Server implements Runnable {
 	private Logger log;
 	private FileHandler fileHandle;
 	private ServerSocket serverSocket;
-	private Thread server = new Thread(this);
+	private Thread serverThread = new Thread(this);
 	private ArrayList<ClientHandler> list = new ArrayList<ClientHandler>();
-
-	public Server(int port) throws IOException {
+	private ServerGUI serverGUI;
+	public Server(int port, ServerGUI viewer) throws IOException {
 		serverSocket = new ServerSocket(port);
-		server.start();
+		this.serverGUI = serverGUI;
+	}
+	
+	public void startServer() {
+		serverThread.start();
+	}
+	
+	public void closeServer() {
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			logHandler("Server already closed /n");
+		}
 	}
 
 	public void sendMessage(String message) {
@@ -37,9 +49,7 @@ public class Server implements Runnable {
 				ClientHandler newCLient = new ClientHandler(socket);
 				newCLient.start();
 				list.add(newCLient);
-
 			}
-
 		} catch (Exception e) {
 
 		}
