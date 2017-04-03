@@ -11,14 +11,14 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class serverController implements Runnable {
+public class Server implements Runnable {
 	private Logger log;
 	private FileHandler fileHandle;
 	private ServerSocket serverSocket;
 	private Thread server = new Thread(this);
 	private ArrayList<ClientHandler> list = new ArrayList<ClientHandler>();
 
-	public serverController(int port) throws IOException {
+	public Server(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
 		server.start();
 	}
