@@ -29,10 +29,6 @@ public class serverController implements Runnable {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
-		new serverController(1337);
-	}
-
 	@Override
 	public void run() {
 		 try{
