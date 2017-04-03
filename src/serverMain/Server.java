@@ -9,42 +9,71 @@ import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
+/**
+ * Server that waits for a client to connect.
+ * @author Lucas Knutsäter & David Sandh
+ *
+ */
 public class Server implements Runnable {
-	private Logger log;
-	private FileHandler fileHandle;
 	private ServerSocket serverSocket;
+	private int port;
 	private Thread serverThread = new Thread(this);
 	private ArrayList<ClientHandler> list = new ArrayList<ClientHandler>();
 	private ServerGUI serverGUI;
-	public Server(int port, ServerGUI viewer) throws IOException {
-		serverSocket = new ServerSocket(port);
+	private ServerController serverController;
+	private boolean serverStatus;
+	
+	public Server(int port, ServerGUI viewer) {
+		this.port = port;
 		this.serverGUI = serverGUI;
 	}
-	
+	/**
+	 * Method starts the server.
+	 */
 	public void startServer() {
+		serverStatus = true;
+		try {
+			serverSocket = new ServerSocket(port);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		serverThread.start();
 	}
-	
-	public void closeServer() {
-		try {
-			serverSocket.close();
-		} catch (IOException e) {
-			logHandler("Server already closed /n");
-		}
+	/**
+	 * Adds a controller to this class.
+	 * @param serverController which controller to add.
+	 */
+	public void addController(ServerController serverController) {
+		this.serverController = serverController;
 	}
 
+	public void stopServer() {
+		try {
+			serverStatus = false;
+			serverSocket.close();
+		} catch (IOException e) {
+			serverController.logHandler("Server already closed /n");
+		}
+	}
+	/**
+	 * method for demo only. Placeholder, Will be removed/remade.
+	 * @param message
+	 */
 	public void sendMessage(String message) {
 		for (int i = 0; i < list.size(); i++) {
 			ClientHandler sendTo = list.get(i);
 			sendTo.writeMessage(message);
 		}
 	}
-
+/**
+ *  Run method which waits for a serverSocket to accept. Adds the client to a list
+ *  and starts a thread to handle the client.
+ */
 	@Override
 	public void run() {
 		try {
-			while (true) {
+			while (serverStatus) {
+				System.out.print("serveron");
 				Socket socket = serverSocket.accept();
 				ClientHandler newCLient = new ClientHandler(socket);
 				newCLient.start();
@@ -54,12 +83,19 @@ public class Server implements Runnable {
 
 		}
 	}
-
+/**
+ * inner class which handles clients.
+ * @author Lucas Knutsäter & David Sandh
+ *
+ */
 	private class ClientHandler extends Thread {
 		private Socket socket;
 		private ObjectOutputStream output;
 		private ObjectInputStream input;
-
+/**
+ * Controller which opens new streams
+ * @param socket Socket which to open stream on.
+ */
 		public ClientHandler(Socket socket) {
 			this.socket = socket;
 			try {
@@ -72,7 +108,9 @@ public class Server implements Runnable {
 			}
 
 		}
-
+/**
+ * Placeholder method. Was used for demo. Will be removed/remade.
+ */
 		public void run() {
 			String message;
 			while (true) {
@@ -86,7 +124,10 @@ public class Server implements Runnable {
 				}
 			}
 		}
-
+/**
+ * Placeholder method. Was used for demo. Will b e removed/remade.
+ * @param message
+ */
 		private void writeMessage(String message) {
 			try {
 				output.writeObject(message);
@@ -95,22 +136,5 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private void startLog() {
-		log = Logger.getLogger("Log");
-		try {
-			fileHandle = new FileHandler("log.txt");
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		fileHandle.setFormatter(new SimpleFormatter());
-		log.addHandler(fileHandle);
-	}
-
-	private void logHandler(String logMessage) {
-		log.info(logMessage + "\n");
 	}
 }

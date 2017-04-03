@@ -3,7 +3,11 @@ package serverMain;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+/**
+ * 
+ * @author Viktor
+ *
+ */
 public class ServerGUI extends JPanel{
 	private ButtonListener listener = new ButtonListener();
 	private JButton btnStartStop = new JButton("Start server");
