@@ -7,9 +7,13 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class serverController implements Runnable {
-
+	private Logger log;
+	private FileHandler fileHandle;
 	private ServerSocket serverSocket;
 	private Thread server = new Thread(this);
 	private ArrayList<ClientHandler> list = new ArrayList<ClientHandler>();
@@ -87,5 +91,21 @@ public class serverController implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+	private void startLog() {
+		log = Logger.getLogger("Log");
+		try {
+			fileHandle = new FileHandler("log.txt");
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		fileHandle.setFormatter(new SimpleFormatter());
+		log.addHandler(fileHandle);
+	}
+	
+	private void logHandler(String logMessage) {
+		log.info(logMessage + "\n");
 	}
 }
