@@ -8,6 +8,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+
+/**
+ * aksdölasmdöasmdöaslkmd MAX ÄR BÄST
+ * @author 123
+ *
+ */
 public class serverController implements Runnable {
 
 	private ServerSocket serverSocket;
