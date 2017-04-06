@@ -46,3 +46,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 log.txt
+log.txt.lck
+*.1
+files/registeredUsers

@@ -1,6 +1,7 @@
 package serverMain;
 
 import java.awt.Image;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,13 +9,14 @@ import java.util.Date;
  * @author Lucas Knutsäter
  *
  */
-public class Message {
-	static final int LOGIN = 0, MESSAGE = 1;
+public class Message implements Serializable {
+	static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3;
 	private Image image;
 	private String sender;
 	private String recipient;
 	private String username;
 	private String password;
+	private boolean status;
 	private Date date;
 	private int type;
 	
@@ -24,17 +26,21 @@ public class Message {
 	 * @param recipient Recipient of message
 	 * @param image image to send
 	 */
-	public Message(String sender, String recipient, Image image) {
+	public Message(int type, String sender, String recipient, Image image) {
 		this.sender = sender;
 		this.type = 1;
 		this.recipient = recipient;
 		this.image = image;
 		this.date = new Date();
 	}
-	public Message(String username, String password) {
+	public Message(int type, String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.type = 0;
+		this.type = type;
+	}
+	public Message(int type, boolean status) {
+		this.status = status;
+		this.type = type;
 	}
 	/**
 	 * returns image
@@ -64,5 +70,33 @@ public class Message {
 	public Date getDate() {
 		//ska nog göras om till att retunera tid istället och inte objektet.
 		return date;
+	}
+	/**
+	 * returns Type.
+	 * @return type to return
+	 */
+	public int getType() {
+		return type;
+	}
+	/**
+	 * returns username
+	 * @return username
+	 */
+	public String getUsername() {
+		return username;
+	}
+	/**
+	 * returns password
+	 * @return password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	/**
+	 * returns status
+	 * @return status
+	 */
+	public boolean getStatus() {
+		return status;
 	}
 }

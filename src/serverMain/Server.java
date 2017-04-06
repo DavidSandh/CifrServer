@@ -34,6 +34,7 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		serverController.logHandler("Server started");
 		serverThread.start();
 	}
 	/**
@@ -57,10 +58,11 @@ public class Server implements Runnable {
 	 * @param message
 	 */
 	public void sendMessage(String message) {
-		for (int i = 0; i < list.size(); i++) {
-			ClientHandler sendTo = list.get(i);
-			sendTo.writeMessage(message);
-		}
+		
+//		for (int i = 0; i < list.size(); i++) {
+//			ClientHandler sendTo = list.get(i);
+//			sendTo.writeMessage(message);
+//		}
 	}
 	/**
 	 *  Run method which waits for a serverSocket to accept. Adds the client to a list
@@ -70,7 +72,6 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			while (serverStatus) {
-				serverController.logHandler("Server started");
 				Socket socket = serverSocket.accept();
 				ClientHandler newCLient = new ClientHandler(socket);
 				newCLient.start();
@@ -109,11 +110,15 @@ public class Server implements Runnable {
 		 * Placeholder method. Was used for demo. Will be removed/remade.
 		 */
 		public void run() {
-			String message;
+			Object message;
 			while (true) {
 				try {
-					message = (String) input.readObject();
-					sendMessage(message);
+					message = input.readObject();
+					Message messageReturn = serverController.checkType(message);
+					if(messageReturn != null) {
+						writeMessage(messageReturn);
+					}
+					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -125,7 +130,7 @@ public class Server implements Runnable {
 		 * Placeholder method. Was used for demo. Will b e removed/remade.
 		 * @param message
 		 */
-		private void writeMessage(String message) {
+		private void writeMessage(Message message) {
 			try {
 				output.writeObject(message);
 			} catch (IOException e) {
