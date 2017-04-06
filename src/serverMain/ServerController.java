@@ -24,6 +24,7 @@ public class ServerController {
 		this.serverGUI = serverGUI;
 		serverGUI.addController(this);
 		server.addController(this);
+		startLog();
 	}
 	/**
 	 * method to start server
@@ -58,5 +59,6 @@ public class ServerController {
 	 */
 	public void logHandler(String logMessage) {
 		log.info(logMessage + "\n");
+		serverGUI.append(logMessage);
 	}
 }

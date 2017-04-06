@@ -6,9 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 /**
  * Server that waits for a client to connect.
  * @author Lucas Knutsäter & David Sandh
@@ -73,7 +70,7 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			while (serverStatus) {
-				System.out.print("serveron");
+				serverController.logHandler("Server started");
 				Socket socket = serverSocket.accept();
 				ClientHandler newCLient = new ClientHandler(socket);
 				newCLient.start();

@@ -3,6 +3,8 @@ package serverMain;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
 /**
  * 
  * @author Viktor
@@ -33,6 +35,11 @@ public class ServerGUI extends JPanel{
 		panel.add(btnStartStop);
 		return panel;
 	}
+	public void append(String message) {
+		LocalDateTime now = LocalDateTime.now();
+		txtLog.append(now.getHour() + ":" + now.getMinute() + ":"+ now.getSecond() + " " + message + "\n");
+	}
+	
 	private JPanel mainPanel(){
 		JPanel panel = new JPanel();
 		txtLog.setPreferredSize(new Dimension(600,500));
