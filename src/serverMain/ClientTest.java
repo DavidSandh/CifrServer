@@ -64,7 +64,7 @@ public class ClientTest{
 			try {
 				input = new ObjectInputStream(socket.getInputStream());
 				output = new ObjectOutputStream(socket.getOutputStream());
-				output.writeObject(new Message(Message.LOGIN, "1heasdfasdfjasdfasdf", "hejsans"));
+				output.writeObject(new Message(Message.LOGIN, "Test2", "hash"));
 				output.flush();
 			} catch (IOException ioe) {
 

@@ -8,6 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -75,7 +78,17 @@ public class ServerController {
 			return false;
 		}
 		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt", true),"UTF-8"))) {
-			writer.write(message.getUsername()+","+message.getPassword() + "\n");
+			try {
+				HashPassword hashPassword = new HashPassword(message.getPassword());
+				System.out.println(hashPassword.getSalt() + " register");
+				writer.write(message.getUsername()+"."+ hashPassword.getHash() + "." + Arrays.toString(hashPassword.getSalt()) + "\n");
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchProviderException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //			writer.append
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -99,7 +112,7 @@ public class ServerController {
 		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
 				String line = reader.readLine();
-				String[] lineSplit = line.split(",");
+				String[] lineSplit = line.split("\\.");
 				if(username.equals(lineSplit[0])) {
 					return false;
 				}
@@ -121,9 +134,20 @@ public class ServerController {
 		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
 				String line = reader.readLine();
-				String[] lineSplit = line.split(",");
+				String[] lineSplit = line.split("\\.");
+				
 				if(username.equals(lineSplit[0])) {
-					if(password.equals(lineSplit[1])) {
+//					System.out.println(bytes);
+					String[] byteValues = lineSplit[2].substring(1, lineSplit[2].length() - 1).split(",");
+					byte[] bytes = new byte[byteValues.length];
+
+					for (int i=0, len=bytes.length; i<len; i++) {
+					   bytes[i] = Byte.parseByte(byteValues[i].trim());     
+					}
+					System.out.println(Arrays.toString(bytes));
+					HashPassword hashPassword = new HashPassword(lineSplit[1],bytes);
+					System.out.println(hashPassword.getHash());
+					if(password.equals(hashPassword.getHash())) {
 						logHandler("Successful login by " + username);
 						return true;
 					}

@@ -118,7 +118,6 @@ public class Server implements Runnable {
 					if(messageReturn != null) {
 						writeMessage(messageReturn);
 					}
-					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
