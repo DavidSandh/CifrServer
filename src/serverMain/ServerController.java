@@ -8,13 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 /**
  * ServerController
- * @author Lucas
+ * @author Lucas Knutsäter & David Sandh
  *
  */
 public class ServerController {
@@ -46,27 +45,37 @@ public class ServerController {
 	public void stopServer() {
 		server.stopServer();
 	}
+	/**
+	 * Check what type object is
+	 * @param object object to check
+	 * @return message to return
+	 */
 	public Message checkType(Object object) {
 		Message message = (Message) object;
 		if(message.getType() == 0) {
-			return null;
-			
+			return new Message(Message.STATUS, loginCheck(message.getUsername(), message.getPassword()));
 		} else if(message.getType() == 1) {
 			return new Message(Message.STATUS, register(message));
+			
 		} else if (message.getType() == 2) {
 			return null;
 		}
 		return null;
 		
 	}
+	/**
+	 * Method to register username and password
+	 * @param message object containing username and password
+	 * @return boolean
+	 */
 	private boolean register(Message message) {
 		String username = message.getUsername();
 		if(!checkIfAvailable(username)) {
 			logHandler(username + " is taken. Register failed");
 			return false;
 		}
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt"),"UTF-8"))) {
-			writer.write(message.getUsername()+","+message.getPassword());
+		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt", true),"UTF-8"))) {
+			writer.write(message.getUsername()+","+message.getPassword() + "\n");
 //			writer.append
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -80,24 +89,53 @@ public class ServerController {
 		}
 		logHandler(username + " registered");
 		return true;
-		
 	}
+	/**
+	 * Checks if username exist in file.
+	 * @param username username to check
+	 * @return boolean
+	 */
 	private boolean checkIfAvailable(String username) {
 		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
 				String line = reader.readLine();
 				String[] lineSplit = line.split(",");
-				if(username == lineSplit[0]) {
-					logHandler("username taken");
+				if(username.equals(lineSplit[0])) {
 					return false;
 				}
 			}
 		} catch(FileNotFoundException e1) {
-			
+			e1.printStackTrace();
 		} catch(IOException e2) {
-			
+			e2.printStackTrace();
 		}
 		return true;
+	}
+	/**
+	 * Check if login is possible
+	 * @param username Username to login with
+	 * @param password Password to login with
+	 * @return boolean
+	 */
+	private boolean loginCheck(String username, String password) {
+		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
+			while(reader.ready()) {
+				String line = reader.readLine();
+				String[] lineSplit = line.split(",");
+				if(username.equals(lineSplit[0])) {
+					if(password.equals(lineSplit[1])) {
+						logHandler("Successful login by " + username);
+						return true;
+					}
+				}
+			}
+		} catch(FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch(IOException e2) {
+			e2.printStackTrace();
+		}
+		logHandler("login failed by " + username);
+		return false;
 	}
 	/**
 	 * Method to start logging
