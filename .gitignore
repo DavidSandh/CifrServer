@@ -49,3 +49,4 @@ log.txt
 log.txt.lck
 *.1
 files/registeredUsers
+files/registeredUsers.txt

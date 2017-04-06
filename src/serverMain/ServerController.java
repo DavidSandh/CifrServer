@@ -67,6 +67,7 @@ public class ServerController {
 		}
 		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt"),"UTF-8"))) {
 			writer.write(message.getUsername()+","+message.getPassword());
+//			writer.append
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,11 +83,12 @@ public class ServerController {
 		
 	}
 	private boolean checkIfAvailable(String username) {
-		try(BufferedReader reader = new BufferedReader(new FileReader("files\registeredUsers.txt"))) {
+		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
 				String line = reader.readLine();
 				String[] lineSplit = line.split(",");
 				if(username == lineSplit[0]) {
+					logHandler("username taken");
 					return false;
 				}
 			}
