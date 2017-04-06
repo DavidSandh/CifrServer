@@ -13,13 +13,14 @@ public class HashPassword {
 
 	public HashPassword(String password) throws NoSuchAlgorithmException, NoSuchProviderException {
 		salt = getSaltRandom();
-		System.out.println(Arrays.toString(salt) + " i hashpassword");
+		System.out.println(Arrays.toString(salt) + " i hashpassword"); //remove
 		this.hash = getSecurePassword(password, salt);
-		System.out.println(hash + " i hashpassword");
+		System.out.println(hash + " i hashpassword");  //remove
 	}
 	
 	public HashPassword(String password, byte[] salt) {
 		this.hash = getSecurePassword(password, salt);
+		this.salt=salt;
 	}
 
 	private static String getSecurePassword(String passwordToHash, byte[] salt) {
@@ -43,6 +44,9 @@ public class HashPassword {
 			e.printStackTrace();
 		}
 		return generatedPassword;
+	}
+	protected String comparePasswords(String passwordtoCompare, byte[] bytes){
+		return getSecurePassword(passwordtoCompare, bytes);
 	}
 
 	// Add salt

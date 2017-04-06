@@ -80,7 +80,7 @@ public class ServerController {
 		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt", true),"UTF-8"))) {
 			try {
 				HashPassword hashPassword = new HashPassword(message.getPassword());
-				System.out.println(hashPassword.getSalt() + " register");
+				System.out.println(hashPassword.getSalt() + " register"); //remove
 				writer.write(message.getUsername()+"."+ hashPassword.getHash() + "." + Arrays.toString(hashPassword.getSalt()) + "\n");
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
@@ -137,17 +137,17 @@ public class ServerController {
 				String[] lineSplit = line.split("\\.");
 				
 				if(username.equals(lineSplit[0])) {
-//					System.out.println(bytes);
+					
 					String[] byteValues = lineSplit[2].substring(1, lineSplit[2].length() - 1).split(",");
 					byte[] bytes = new byte[byteValues.length];
 
 					for (int i=0, len=bytes.length; i<len; i++) {
 					   bytes[i] = Byte.parseByte(byteValues[i].trim());     
 					}
-					System.out.println(Arrays.toString(bytes));
+					System.out.println(Arrays.toString(bytes)); //remove
 					HashPassword hashPassword = new HashPassword(lineSplit[1],bytes);
-					System.out.println(hashPassword.getHash());
-					if(password.equals(hashPassword.getHash())) {
+					System.out.println(hashPassword.getHash()); //remove
+					if(hashPassword.comparePasswords(password, bytes).equals(lineSplit[1])) {
 						logHandler("Successful login by " + username);
 						return true;
 					}
