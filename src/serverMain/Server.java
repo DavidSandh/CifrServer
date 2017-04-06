@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 /**
  * Server that waits for a client to connect.
@@ -111,7 +112,7 @@ public class Server implements Runnable {
 		 */
 		public void run() {
 			Object message;
-			while (true) {
+			while (!Thread.interrupted()) {
 				try {
 					message = input.readObject();
 					Message messageReturn = serverController.checkType(message);
@@ -122,7 +123,9 @@ public class Server implements Runnable {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+					break;
+					
+				} 
 			}
 		}
 		/**
