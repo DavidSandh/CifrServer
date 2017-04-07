@@ -53,7 +53,8 @@ public class ServerController {
 		} else if(message.getType() == 1) {
 			return new Message(Message.STATUS, ServerLogin.register(message));
 		} else if (message.getType() == 2) {
-			return null;
+			ServerMessageHandler.put(message.getRecipient(), message);
+			//ska notifiera användaren att nytt medelande finns
 		}
 		return null;
 		

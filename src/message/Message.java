@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class Message implements Serializable {
 	public static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3;
-	private Image image;
+	private Object image;
 	private String sender;
 	private String recipient;
 	private String username;
@@ -26,11 +26,11 @@ public class Message implements Serializable {
 	 * @param recipient Recipient of message
 	 * @param image image to send
 	 */
-	public Message(int type, String sender, String recipient, Image image) {
+	public Message(int type, String sender, String recipient, Object image) {
 		this.sender = sender;
 		this.type = 1;
 		this.recipient = recipient;
-		this.image = image;
+		this.image= image;
 		this.date = new Date();
 	}
 	public Message(int type, String username, String password) {
@@ -46,7 +46,7 @@ public class Message implements Serializable {
 	 * returns image
 	 * @return image in message
 	 */
-	public Image getImage() {
+	public Object getImage() {
 		return image;
 	}
 	/**

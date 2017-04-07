@@ -60,16 +60,17 @@ public class Server implements Runnable {
 		}
 	}
 	/**
-	 * method for demo only. Placeholder, Will be removed/remade.
+	 * Ska notifiera clienten att ett nytt message finns
 	 * @param message
 	 */
-	public void sendMessage(String message) {
+	public void notifyUser(String username) {
 		
 //		for (int i = 0; i < list.size(); i++) {
 //			ClientHandler sendTo = list.get(i);
 //			sendTo.writeMessage(message);
 //		}
 	}
+	
 	/**
 	 *  Run method which waits for a serverSocket to accept. Adds the client to a list
 	 *  and starts a thread to handle the client.
@@ -119,7 +120,7 @@ public class Server implements Runnable {
 			Object message;
 			while (!Thread.interrupted()) {
 				try {
-					message = input.readObject();
+					message = (Object)input.readObject();
 					Message messageReturn = serverController.checkType(message);
 					if(messageReturn != null) {
 						writeMessage(messageReturn);
