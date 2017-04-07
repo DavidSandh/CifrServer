@@ -17,10 +17,8 @@ public class ServerMessageHandler {
 	protected static void put(String username, Message message) {
 		if (!messageBuffer.containsKey(username)) {
 			messageBuffer.put(username, new ArrayList<Message>());
-			System.out.println("nyckelfinnsinte  " + username + " : " + messageBuffer.get(username).toString());//remove
 		}
 			messageBuffer.get(username).add(message);	
-			System.out.println("nyckelfinns "  + username + " : " + messageBuffer.get(username).toString()); //remove
 	}
 	protected static Message remove(String username) {
 		ArrayList<Message> tempList = messageBuffer.get(username);
