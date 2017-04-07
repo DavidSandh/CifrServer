@@ -24,10 +24,10 @@ public class ServerGUI extends JPanel{
 		add(buttonPanel(), BorderLayout.NORTH);
 		showFrame();
 	}
-	public void addController(ServerController serverController) {
+	protected void addController(ServerController serverController) {
 		this.serverController = serverController;
 	}
-	private JPanel buttonPanel() {
+	protected JPanel buttonPanel() {
 		JPanel panel = new JPanel();
 		btnStartStop.addActionListener(listener);
 		btnStartStop.setPreferredSize(new Dimension(150,30));
@@ -35,12 +35,12 @@ public class ServerGUI extends JPanel{
 		panel.add(btnStartStop);
 		return panel;
 	}
-	public void append(String message) {
+	protected void append(String message) {
 		LocalDateTime now = LocalDateTime.now();
 		txtLog.append(now.getHour() + ":" + now.getMinute() + ":"+ now.getSecond() + " " + message + "\n");
 	}
 	
-	private JPanel mainPanel(){
+	protected JPanel mainPanel(){
 		JPanel panel = new JPanel();
 		txtLog.setPreferredSize(new Dimension(600,500));
 		panel.setPreferredSize(new Dimension(800,600));
@@ -48,7 +48,7 @@ public class ServerGUI extends JPanel{
 		return panel;
 	}
 	
-	public void showFrame() {
+	protected void showFrame() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(this);

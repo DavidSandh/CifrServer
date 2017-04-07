@@ -22,7 +22,7 @@ public class ServerController {
 	 * @param server instance of Server
 	 * @param serverGUI instance of ServerGUI
 	 */
-	public ServerController(Server server, ServerGUI serverGUI) {
+	protected ServerController(Server server, ServerGUI serverGUI) {
 		this.server = server;
 		this.serverGUI = serverGUI;
 		serverGUI.addController(this);
@@ -32,13 +32,13 @@ public class ServerController {
 	/**
 	 * method to start server
 	 */
-	public void startServer() {
+	protected void startServer() {
 		server.startServer();
 	}
 	/**
 	 * method to stop server
 	 */
-	public void stopServer() {
+	protected void stopServer() {
 		server.stopServer();
 	}
 	/**
@@ -46,7 +46,7 @@ public class ServerController {
 	 * @param object object to check
 	 * @return message to return
 	 */
-	public Message checkType(Object object) {
+	protected Message checkType(Object object) {
 		Message message = (Message) object;
 		if(message.getType() == 0) {
 			return new Message(Message.STATUS, ServerLogin.loginCheck(message.getUsername(), message.getPassword()));
@@ -79,7 +79,7 @@ public class ServerController {
 	 * Method to add log message
 	 * @param logMessage Message to log
 	 */
-	public static void logHandler(String logMessage) {
+	protected static void logHandler(String logMessage) {
 		log.info(logMessage + "\n");
 		serverGUI.append(logMessage);
 	}

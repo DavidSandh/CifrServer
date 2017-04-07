@@ -30,7 +30,7 @@ public class Server implements Runnable {
 	/**
 	 * Method starts the server.
 	 */
-	public void startServer() {
+	protected void startServer() {
 		serverStatus = true;
 		try {
 			serverSocket = new ServerSocket(port);
@@ -45,11 +45,11 @@ public class Server implements Runnable {
 	 * Adds a controller to this class.
 	 * @param serverController which controller to add.
 	 */
-	public void addController(ServerController serverController) {
+	protected void addController(ServerController serverController) {
 		this.serverController = serverController;
 	}
 
-	public void stopServer() {
+	protected void stopServer() {
 		try {
 			serverStatus = false;
 			serverSocket.close();
@@ -63,7 +63,7 @@ public class Server implements Runnable {
 	 * method for demo only. Placeholder, Will be removed/remade.
 	 * @param message
 	 */
-	public void sendMessage(String message) {
+	protected void sendMessage(String message) {
 		
 //		for (int i = 0; i < list.size(); i++) {
 //			ClientHandler sendTo = list.get(i);
