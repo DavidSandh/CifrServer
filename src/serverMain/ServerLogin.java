@@ -10,6 +10,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Arrays;
 
+import message.Message;
+
 public class ServerLogin {
 	/**
 	 * Check if login is possible

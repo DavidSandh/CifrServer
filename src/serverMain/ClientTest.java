@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
+import message.Message;
+
 /**
  * Client handles connections from and to the client.
  * @author Lucas, Elias, David, John, Filip, Alexander

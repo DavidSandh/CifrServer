@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+
+import message.Message;
 /**
  * Server that waits for a client to connect.
  * @author Lucas Knutsäter & David Sandh

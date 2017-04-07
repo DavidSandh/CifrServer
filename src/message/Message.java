@@ -1,4 +1,4 @@
-package serverMain;
+package message;
 
 import java.awt.Image;
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.util.Date;
  *
  */
 public class Message implements Serializable {
-	static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3;
+	public static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3;
 	private Image image;
 	private String sender;
 	private String recipient;
