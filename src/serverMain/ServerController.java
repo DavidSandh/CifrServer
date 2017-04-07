@@ -1,16 +1,6 @@
 package serverMain;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -21,8 +11,8 @@ import java.util.logging.SimpleFormatter;
  */
 public class ServerController {
 	private Server server;
-	private ServerGUI serverGUI;
-	private Logger log;
+	private static ServerGUI serverGUI;
+	private static Logger log;
 	private FileHandler fileHandle;
 	/**
 	 * Constructor which adds controller to serverGUI and server
@@ -56,110 +46,14 @@ public class ServerController {
 	public Message checkType(Object object) {
 		Message message = (Message) object;
 		if(message.getType() == 0) {
-			return new Message(Message.STATUS, loginCheck(message.getUsername(), message.getPassword()));
+			return new Message(Message.STATUS, ServerLogin.loginCheck(message.getUsername(), message.getPassword()));
 		} else if(message.getType() == 1) {
-			return new Message(Message.STATUS, register(message));
-			
+			return new Message(Message.STATUS, ServerLogin.register(message));
 		} else if (message.getType() == 2) {
 			return null;
 		}
 		return null;
 		
-	}
-	/**
-	 * Method to register username and password
-	 * @param message object containing username and password
-	 * @return boolean
-	 */
-	private boolean register(Message message) {
-		String username = message.getUsername();
-		if(!checkIfAvailable(username)) {
-			logHandler(username + " is taken. Register failed");
-			return false;
-		}
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt", true),"UTF-8"))) {
-			try {
-				HashPassword hashPassword = new HashPassword(message.getPassword());
-				System.out.println(hashPassword.getSalt() + " register"); //remove
-				writer.write(message.getUsername()+"."+ hashPassword.getHash() + "." + Arrays.toString(hashPassword.getSalt()) + "\n");
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchProviderException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//			writer.append
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		logHandler(username + " registered");
-		return true;
-	}
-	/**
-	 * Checks if username exist in file.
-	 * @param username username to check
-	 * @return boolean
-	 */
-	private boolean checkIfAvailable(String username) {
-		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
-			while(reader.ready()) {
-				String line = reader.readLine();
-				String[] lineSplit = line.split("\\.");
-				if(username.equals(lineSplit[0])) {
-					return false;
-				}
-			}
-		} catch(FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch(IOException e2) {
-			e2.printStackTrace();
-		}
-		return true;
-	}
-	/**
-	 * Check if login is possible
-	 * @param username Username to login with
-	 * @param password Password to login with
-	 * @return boolean
-	 */
-	private boolean loginCheck(String username, String password) {
-		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
-			while(reader.ready()) {
-				String line = reader.readLine();
-				String[] lineSplit = line.split("\\.");
-				
-				if(username.equals(lineSplit[0])) {
-					
-					String[] byteValues = lineSplit[2].substring(1, lineSplit[2].length() - 1).split(",");
-					byte[] bytes = new byte[byteValues.length];
-
-					for (int i=0, len=bytes.length; i<len; i++) {
-					   bytes[i] = Byte.parseByte(byteValues[i].trim());     
-					}
-					System.out.println(Arrays.toString(bytes)); //remove
-					HashPassword hashPassword = new HashPassword(lineSplit[1],bytes);
-					System.out.println(hashPassword.getHash()); //remove
-					if(hashPassword.comparePasswords(password, bytes).equals(lineSplit[1])) {
-						logHandler("Successful login by " + username);
-						return true;
-					}
-				}
-			}
-		} catch(FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch(IOException e2) {
-			e2.printStackTrace();
-		}
-		logHandler("login failed by " + username);
-		return false;
 	}
 	/**
 	 * Method to start logging
@@ -180,7 +74,7 @@ public class ServerController {
 	 * Method to add log message
 	 * @param logMessage Message to log
 	 */
-	public void logHandler(String logMessage) {
+	public static void logHandler(String logMessage) {
 		log.info(logMessage + "\n");
 		serverGUI.append(logMessage);
 	}
