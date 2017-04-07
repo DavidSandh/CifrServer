@@ -51,3 +51,4 @@ log.txt.lck
 files/registeredUsers
 files/registeredUsers.txt
 *.class
+*.txt

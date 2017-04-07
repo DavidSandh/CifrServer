@@ -17,7 +17,7 @@ import message.Message;
 public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private int port;
-	private Thread serverThread = new Thread(this);
+	private Thread serverThread;
 	private ArrayList<ClientHandler> list = new ArrayList<ClientHandler>();
 	private ServerGUI serverGUI;
 	private ServerController serverController;
@@ -38,6 +38,7 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 		serverController.logHandler("Server started");
+		serverThread = new Thread(this);
 		serverThread.start();
 	}
 	/**
@@ -52,6 +53,8 @@ public class Server implements Runnable {
 		try {
 			serverStatus = false;
 			serverSocket.close();
+			serverThread.interrupt();
+			serverThread = null;
 		} catch (IOException e) {
 			serverController.logHandler("Server already closed /n");
 		}

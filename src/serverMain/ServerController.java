@@ -1,6 +1,7 @@
 package serverMain;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -63,7 +64,9 @@ public class ServerController {
 	private void startLog() {
 		log = Logger.getLogger("Log");
 		try {
-			fileHandle = new FileHandler("log.txt");
+			LocalDateTime now = LocalDateTime.now();
+			String path = now.getMonthValue()+"-" + now.getDayOfMonth()+"-" + now.getHour()+";" + now.getMinute() +" "; 
+			fileHandle = new FileHandler("log/" + path + "log.txt");
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
