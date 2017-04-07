@@ -5,16 +5,22 @@ import java.util.HashMap;
 
 import message.Message;
 
+ /**
+  * ÄNDRA STRING TILL MESSAGE
+  * @author David Sandh & Lucas Knutsäter
+  *
+  */
 public class ServerMessageHandler {
 	private static HashMap<String, ArrayList<Message>> messageBuffer = new HashMap<String, ArrayList<Message>>();
 	
+
 	protected static void put(String username, Message message) {
 		if (!messageBuffer.containsKey(username)) {
 			messageBuffer.put(username, new ArrayList<Message>());
-			System.out.println("nyckelfinnsinte  " + username + " : " + messageBuffer.get(username).toString());
+			System.out.println("nyckelfinnsinte  " + username + " : " + messageBuffer.get(username).toString());//remove
 		}
 			messageBuffer.get(username).add(message);	
-			System.out.println("nyckelfinns "  + username + " : " + messageBuffer.get(username).toString());
+			System.out.println("nyckelfinns "  + username + " : " + messageBuffer.get(username).toString()); //remove
 	}
 	protected static Message remove(String username) {
 		ArrayList<Message> tempList = messageBuffer.get(username);
@@ -23,6 +29,10 @@ public class ServerMessageHandler {
 		}
 		return null;
 	}
+	/**
+	 * TA BORT SEN
+	 * @param args
+	 */
 //	public static void main(String [] args) {
 //		ServerMessageHandler test = new ServerMessageHandler();
 //		test.put("nyckel", "value");
