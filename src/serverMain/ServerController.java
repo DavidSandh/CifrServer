@@ -48,11 +48,11 @@ public class ServerController {
 	 */
 	protected Message checkType(Object object) {
 		Message message = (Message) object;
-		if(message.getType() == 0) {
+		if(message.getType() == Message.LOGIN) {
 			return new Message(Message.STATUS, ServerLogin.loginCheck(message.getUsername(), message.getPassword()));
-		} else if(message.getType() == 1) {
+		} else if(message.getType() == Message.REGISTER) {
 			return new Message(Message.STATUS, ServerLogin.register(message));
-		} else if (message.getType() == 2) {
+		} else if (message.getType() == Message.MESSAGE) {
 			ServerMessageHandler.put(message.getRecipient(), message);
 			//ska notifiera användaren att nytt medelande finns
 		}
