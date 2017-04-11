@@ -1,10 +1,16 @@
-package serverMain;
+package server.main;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 /**
  * 
  * @author Viktor
@@ -13,8 +19,8 @@ import java.time.temporal.ChronoField;
 public class ServerGUI extends JPanel{
 	private ButtonListener listener = new ButtonListener();
 	private JButton btnStartStop = new JButton("Start server");
-	private JTextArea txtLog = new JTextArea();
-	private Font font1 = new Font("Arial", Font.PLAIN,22);
+	private JTextArea logTextArea = new JTextArea();
+	private Font font = new Font("Arial", Font.PLAIN,22);
 	private ServerController serverController;
 	
 	public ServerGUI() {
@@ -24,36 +30,39 @@ public class ServerGUI extends JPanel{
 		add(buttonPanel(), BorderLayout.NORTH);
 		showFrame();
 	}
-	protected void addController(ServerController serverController) {
-		this.serverController = serverController;
-	}
-	protected JPanel buttonPanel() {
-		JPanel panel = new JPanel();
-		btnStartStop.addActionListener(listener);
-		btnStartStop.setPreferredSize(new Dimension(150,30));
-		btnStartStop.setFont(font1);
-		panel.add(btnStartStop);
-		return panel;
-	}
-	protected void append(String message) {
-		LocalDateTime now = LocalDateTime.now();
-		txtLog.append(now.getHour() + ":" + now.getMinute() + ":"+ now.getSecond() + " " + message + "\n");
-	}
 	
-	protected JPanel mainPanel(){
+	private JPanel mainPanel(){
 		JPanel panel = new JPanel();
-		txtLog.setPreferredSize(new Dimension(600,500));
+		logTextArea.setPreferredSize(new Dimension(600,500));
 		panel.setPreferredSize(new Dimension(800,600));
-		panel.add(txtLog);
+		panel.add(logTextArea);
 		return panel;
 	}
 	
-	protected void showFrame() {
+	private void showFrame() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	private JPanel buttonPanel() {
+		JPanel panel = new JPanel();
+		btnStartStop.addActionListener(listener);
+		btnStartStop.setPreferredSize(new Dimension(150,30));
+		btnStartStop.setFont(font);
+		panel.add(btnStartStop);
+		return panel;
+	}
+	
+	protected void addController(ServerController serverController) {
+		this.serverController = serverController;
+	}
+
+	protected void append(String message) {
+		LocalDateTime now = LocalDateTime.now();
+		logTextArea.append(now.getHour() + ":" + now.getMinute() + ":"+ now.getSecond() + " " + message + "\n");
 	}
 	
 	private class ButtonListener implements ActionListener {

@@ -1,14 +1,13 @@
-package serverMain;
+package server.main;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
-
 import message.Message;
+
 /**
  * Server that waits for a client to connect.
  * @author Lucas Knutsäter & David Sandh
@@ -18,15 +17,14 @@ public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private int port;
 	private Thread serverThread;
-	private ArrayList<ClientHandler> list = new ArrayList<ClientHandler>();
-	private ServerGUI serverGUI;
+	private ArrayList<ClientHandler> clienList = new ArrayList<ClientHandler>();
 	private ServerController serverController;
 	private boolean serverStatus;
 	
 	public Server(int port, ServerGUI viewer) {
 		this.port = port;
-		this.serverGUI = serverGUI;
 	}
+	
 	/**
 	 * Method starts the server.
 	 */
@@ -41,6 +39,7 @@ public class Server implements Runnable {
 		serverThread = new Thread(this);
 		serverThread.start();
 	}
+	
 	/**
 	 * Adds a controller to this class.
 	 * @param serverController which controller to add.
@@ -59,17 +58,6 @@ public class Server implements Runnable {
 			serverController.logHandler("Server already closed /n");
 		}
 	}
-	/**
-	 * Ska notifiera clienten att ett nytt message finns
-	 * @param message
-	 */
-
-//	protected void notifyUser(String username) {	
-//		for (int i = 0; i < list.size(); i++) {
-//			ClientHandler sendTo = list.get(i);
-//			sendTo.writeMessage(message);
-//		}
-//	}
 	
 	/**
 	 *  Run method which waits for a serverSocket to accept. Adds the client to a list
@@ -82,19 +70,19 @@ public class Server implements Runnable {
 				Socket socket = serverSocket.accept();
 				ClientHandler newCLient = new ClientHandler(socket);
 				newCLient.start();
-				list.add(newCLient);
+				clienList.add(newCLient);
 			}
 		} catch (Exception e) {
 
 		}
 	}
+	
 	/**
 	 * inner class which handles clients.
 	 * @author Lucas Knutsäter & David Sandh
 	 *
 	 */
 	private class ClientHandler extends Thread {
-		private Socket socket;
 		private ObjectOutputStream output;
 		private ObjectInputStream input;
 		/**
@@ -102,16 +90,13 @@ public class Server implements Runnable {
 		 * @param socket Socket which to open stream on.
 		 */
 		public ClientHandler(Socket socket) {
-			this.socket = socket;
 			try {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
 				output.flush();
-
 			} catch (IOException ioe) {
 
 			}
-
 		}
 		/**
 		 * Placeholder method. Was used for demo. Will be removed/remade.
@@ -130,10 +115,10 @@ public class Server implements Runnable {
 				} catch (IOException e) {
 					e.printStackTrace();
 					break;
-					
 				} 
 			}
 		}
+		
 		/**
 		 * Placeholder method. Was used for demo. Will b e removed/remade.
 		 * @param message
@@ -142,7 +127,6 @@ public class Server implements Runnable {
 			try {
 				output.writeObject(message);
 			} catch (IOException e) {
-
 				e.printStackTrace();
 			}
 		}

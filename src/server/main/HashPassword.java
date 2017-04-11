@@ -1,21 +1,22 @@
-package serverMain;
+package server.main;
 
-import java.lang.reflect.Array;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+
 
 public class HashPassword {
 	private byte[] salt;
 	private String hash;
 
-	public HashPassword() {
+	public HashPassword(){
 		
 	}
+	
 	public HashPassword(String password) throws NoSuchAlgorithmException, NoSuchProviderException {
-		salt = getSaltRandom();
+		salt = getRandomSalt();
 		this.hash = getSecurePassword(password, salt);
 	}
 
@@ -41,16 +42,17 @@ public class HashPassword {
 		}
 		return generatedPassword;
 	}
+	
 	protected String comparePasswords(String passwordtoCompare, byte[] bytes){
 		return getSecurePassword(passwordtoCompare, bytes);
 	}
 	
 	protected String generateHashedPassword(String password) throws NoSuchAlgorithmException, NoSuchProviderException {
-		return getSecurePassword(password, getSaltRandom());
+		return getSecurePassword(password, getRandomSalt());
 	}
 
 	// Add salt
-	private static byte[] getSaltRandom() throws NoSuchAlgorithmException, NoSuchProviderException {
+	private static byte[] getRandomSalt() throws NoSuchAlgorithmException, NoSuchProviderException {
 		// Always use a SecureRandom generator
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
 		// Create array for salt
@@ -60,10 +62,12 @@ public class HashPassword {
 		// return salt
 		return salt;
 	}
-	public String getHash() {
+	
+	protected String getHash() {
 		return hash;
 	}
-	public byte[] getSalt() {
+	
+	protected byte[] getSalt() {
 		return salt;
 	}
 }
