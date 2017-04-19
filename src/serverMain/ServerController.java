@@ -49,9 +49,9 @@ public class ServerController {
 	protected Message checkType(Object object) {
 		Message message = (Message) object;
 		if(message.getType() == 0) {
-			return new Message(Message.STATUS, ServerLogin.loginCheck(message.getUsername(), message.getPassword()));
+			return new Message(Message.LOGIN, ServerLogin.loginCheck(message.getUsername(), message.getPassword()));
 		} else if(message.getType() == 1) {
-			return new Message(Message.STATUS, ServerLogin.register(message));
+			return new Message(Message.REGISTER, ServerLogin.register(message));
 		} else if (message.getType() == 2) {
 			ServerMessageHandler.put(message.getRecipient(), message);
 			//ska notifiera användaren att nytt medelande finns
