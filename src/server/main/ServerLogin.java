@@ -1,4 +1,4 @@
-package serverMain;
+package server.main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,10 +9,10 @@ import java.io.OutputStreamWriter;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Arrays;
-
 import message.Message;
 
 public class ServerLogin {
+	
 	/**
 	 * Check if login is possible
 	 * @param username Username to login with
@@ -22,16 +22,16 @@ public class ServerLogin {
 	protected static boolean loginCheck(String username, String password) {
 		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
-				String line = reader.readLine();
-				String[] lineSplit = line.split("\\.");
-				if(username.equals(lineSplit[0])) {
-					String[] byteValues = lineSplit[2].substring(1, lineSplit[2].length() - 1).split(",");
+				String tempLine = reader.readLine();
+				String[] tempLineSplit = tempLine.split("\\.");
+				if(username.equals(tempLineSplit[0])) {
+					String[] byteValues = tempLineSplit[2].substring(1, tempLineSplit[2].length() - 1).split(",");
 					byte[] bytes = new byte[byteValues.length];
-					for (int i=0, len=bytes.length; i<len; i++) {
+					for (int i=0; i<bytes.length; i++) {
 					   bytes[i] = Byte.parseByte(byteValues[i].trim());     
 					}
 					HashPassword hashPassword = new HashPassword();
-					if(hashPassword.comparePasswords(password, bytes).equals(lineSplit[1])) {
+					if(hashPassword.comparePasswords(password, bytes).equals(tempLineSplit[1])) {
 						ServerController.logHandler("Successful login by " + username);
 						return true;
 					}
@@ -43,6 +43,7 @@ public class ServerLogin {
 		ServerController.logHandler("login failed by " + username);
 		return false;
 	}
+	
 	/**
 	 * Checks if username exist in file.
 	 * @param username username to check
@@ -51,9 +52,9 @@ public class ServerLogin {
 	protected static boolean checkIfAvailable(String username) {
 		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
-				String line = reader.readLine();
-				String[] lineSplit = line.split("\\.");
-				if(username.equals(lineSplit[0])) {
+				String tempLine = reader.readLine();
+				String[] tempLineSplit = tempLine.split("\\.");
+				if(username.equals(tempLineSplit[0])) {
 					return false;
 				}
 			}
@@ -62,6 +63,7 @@ public class ServerLogin {
 		}
 		return true;
 	}
+	
 	/**
 	 * Method to register username and password
 	 * @param message object containing username and password
