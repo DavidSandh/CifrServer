@@ -22,16 +22,18 @@ public class ServerLogin {
 	protected static boolean loginCheck(String username, String password) {
 		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
 			while(reader.ready()) {
+				ServerPsqlConnection psql = new ServerPsqlConnection();
 				String tempLine = reader.readLine();
 				String[] tempLineSplit = tempLine.split("\\.");
-				if(username.equals(tempLineSplit[0])) {
-					String[] byteValues = tempLineSplit[2].substring(1, tempLineSplit[2].length() - 1).split(",");
+				if(!psql.checkIfAvailable(username)) {
+					String salt = psql.selectSalt(username);
+					String[] byteValues = salt.substring(1, salt.length() - 1).split(",");
 					byte[] bytes = new byte[byteValues.length];
 					for (int i=0; i<bytes.length; i++) {
 					   bytes[i] = Byte.parseByte(byteValues[i].trim());     
 					}
 					HashPassword hashPassword = new HashPassword();
-					if(hashPassword.comparePasswords(password, bytes).equals(tempLineSplit[1])) {
+					if(hashPassword.comparePasswords(password, bytes).equals(psql.selectPassword(username))) {
 						ServerController.logHandler("Successful login by " + username);
 						return true;
 					}
