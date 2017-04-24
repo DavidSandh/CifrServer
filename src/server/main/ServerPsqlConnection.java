@@ -30,8 +30,9 @@ public class ServerPsqlConnection {
 		 
 	}
 	public void insert(String username, String password, String salt){
+		username.toLowerCase();
+		
 		try {
-			
 			statement = connection.createStatement();
 			String command = "insert into users (username, password) values ('" + username +"', '" + password + "')";
 			statement.executeUpdate(command);
@@ -49,21 +50,25 @@ public class ServerPsqlConnection {
 		}
 	}
 	public boolean checkIfAvailable(String username){
+		String name = username.toLowerCase();
 		try{
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select username from users where username = '" + username +"';");
-			while(rs.next()){
-			String name = rs.getString("username");
-			System.out.println(name);
-			rs.close();
-			statement.close();
-			connection.close();
+			ResultSet rs = statement.executeQuery("select username from users where username = '" + name +"';");
+			if(rs.next()==false){
+				rs.close();
+				statement.close();
+				connection.close();
+				return true;
+			}else{
+				rs.close();
+				statement.close();
+				connection.close();
+				return false;
 			}
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}
-		
-		return true;
+		return false;
 	}
 	public void select(String username){
 		try {
@@ -79,6 +84,9 @@ public class ServerPsqlConnection {
 		ServerPsqlConnection spc = new ServerPsqlConnection();
 		spc.connect();
 //		spc.insert("david", "lösenord", "saltsten");
-		spc.checkIfAvailable("david");
+		System.out.println(spc.checkIfAvailable("David"));
+		spc.connect();
+		System.out.println(spc.checkIfAvailable("davi2d"));
+		
 	}
 }
