@@ -29,6 +29,7 @@ public class ServerPsqlConnection {
 		 System.out.println("Opened database successfully");
 		 
 	}
+	
 	public void insert(String username, String password, String salt){
 		username.toLowerCase();
 		
@@ -43,12 +44,12 @@ public class ServerPsqlConnection {
 			 statement.close();
 	         connection.commit();
 	         connection.close();
-		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	public boolean checkIfAvailable(String username){
 		String name = username.toLowerCase();
 		try{
@@ -70,16 +71,37 @@ public class ServerPsqlConnection {
 		}
 		return false;
 	}
-	public void select(String username){
+	
+	public String selectPassword(String username){
+		String password = null;
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select password from users where username = " +username + ";");
+			ResultSet rs = statement.executeQuery("select password from users where username = " + username + ";");
+			while(rs.next()){
+				password = rs.getString("password");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return password;
 	}
+	
+	public String selectSalt(String username){
+		String salt = null;
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select salt from salt where username = " + username + ";");
+			while(rs.next()){
+				salt = rs.getString("salt");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return salt;
+	}
+	
 	public static void main(String[] args){
 		ServerPsqlConnection spc = new ServerPsqlConnection();
 		spc.connect();
