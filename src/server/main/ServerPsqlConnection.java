@@ -32,7 +32,7 @@ public class ServerPsqlConnection {
 	
 	public void insert(String username, String password, String salt){
 		username.toLowerCase();
-		
+		connect();
 		try {
 			statement = connection.createStatement();
 			String command = "insert into users (username, password) values ('" + username +"', '" + password + "')";
@@ -52,6 +52,7 @@ public class ServerPsqlConnection {
 	
 	public boolean checkIfAvailable(String username){
 		String name = username.toLowerCase();
+		connect();
 		try{
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select username from users where username = '" + name +"';");
@@ -74,6 +75,7 @@ public class ServerPsqlConnection {
 	
 	public String selectPassword(String username){
 		String password = null;
+		connect();
 		try {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select password from users where username = " + username + ";");
@@ -89,6 +91,7 @@ public class ServerPsqlConnection {
 	
 	public String selectSalt(String username){
 		String salt = null;
+		connect();
 		try {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select salt from salt where username = " + username + ";");

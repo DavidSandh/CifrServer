@@ -12,7 +12,6 @@ import java.util.Arrays;
 import message.Message;
 
 public class ServerLogin {
-	
 	/**
 	 * Check if login is possible
 	 * @param username Username to login with
@@ -20,11 +19,7 @@ public class ServerLogin {
 	 * @return boolean
 	 */
 	protected static boolean loginCheck(String username, String password) {
-		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
-			while(reader.ready()) {
 				ServerPsqlConnection psql = new ServerPsqlConnection();
-				String tempLine = reader.readLine();
-				String[] tempLineSplit = tempLine.split("\\.");
 				if(!psql.checkIfAvailable(username)) {
 					String salt = psql.selectSalt(username);
 					String[] byteValues = salt.substring(1, salt.length() - 1).split(",");
@@ -38,32 +33,8 @@ public class ServerLogin {
 						return true;
 					}
 				}
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
 		ServerController.logHandler("login failed by " + username);
 		return false;
-	}
-	
-	/**
-	 * Checks if username exist in file.
-	 * @param username username to check
-	 * @return boolean
-	 */
-	protected static boolean checkIfAvailable(String username) {
-		try(BufferedReader reader = new BufferedReader(new FileReader("files/registeredUsers.txt"))) {
-			while(reader.ready()) {
-				String tempLine = reader.readLine();
-				String[] tempLineSplit = tempLine.split("\\.");
-				if(username.equals(tempLineSplit[0])) {
-					return false;
-				}
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		return true;
 	}
 	
 	/**
@@ -73,21 +44,25 @@ public class ServerLogin {
 	 */
 	protected static boolean register(Message message) {
 		String username = message.getUsername();
-		if(!checkIfAvailable(username)) {
+		ServerPsqlConnection psql = new ServerPsqlConnection();
+		if(!psql.checkIfAvailable(username)) {
 			ServerController.logHandler(username + " is taken. Register failed");
 			return false;
 		}
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("files/registeredUsers.txt", true),"UTF-8"))) {
-			try {
-				HashPassword hashPassword = new HashPassword(message.getPassword());
-				writer.write(message.getUsername()+"."+ hashPassword.getHash() + "." + Arrays.toString(hashPassword.getSalt()) + "\n");
-			} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		HashPassword hashPassword = null;
+		try {
+			hashPassword = new HashPassword(message.getPassword());
+		} catch (Exception e) {
+			
 		}
+		psql.insert(username, hashPassword.getHash() , Arrays.toString(hashPassword.getSalt()));
 		ServerController.logHandler(username + " registered");
 		return true;
+	}
+	
+	
+	public static void main (String [] args) {
+		ServerLogin login = new ServerLogin();
+		login.register(new Message(Message.REGISTER, "Lucas" , "password"));
 	}
 }
