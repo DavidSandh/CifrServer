@@ -53,3 +53,4 @@ files/registeredUsers.txt
 *.class
 *.txt
 *.lck
+*.classpath
