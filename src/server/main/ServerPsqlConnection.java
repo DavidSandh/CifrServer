@@ -41,12 +41,12 @@ public class ServerPsqlConnection {
 			command = "insert into salt (username, salt) values ('" + username +"', '" + salt + "')";
 			statement.executeUpdate(command);
 			System.out.println(command);
-			 statement.close();
 	         connection.commit();
-	         connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			close();
 		}
 	}
 	
@@ -56,19 +56,19 @@ public class ServerPsqlConnection {
 		try{
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select username from users where username = '" + name +"';");
-			if(rs.next()==false){
-				rs.close();
-				statement.close();
-				connection.close();
-				return true;
-			}else{
-				rs.close();
-				statement.close();
-				connection.close();
-				return false;
+			while(rs.next()){
+				String checkUsername = rs.getString("username");
+				if(checkUsername.equals(username)) {
+					System.out.println(checkUsername);
+					close();
+					return false;
+				}
 			}
+			return true;
 		}catch(Exception e){
 			e.printStackTrace();
+		}finally {
+			close();
 		}
 		return false;
 	}
@@ -85,6 +85,8 @@ public class ServerPsqlConnection {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			close();
 		}
 		return password;
 	}
@@ -105,13 +107,17 @@ public class ServerPsqlConnection {
 		return salt;
 	}
 	
-	public static void main(String[] args){
-		ServerPsqlConnection spc = new ServerPsqlConnection();
-		spc.connect();
-//		spc.insert("david", "lösenord", "saltsten");
-		System.out.println(spc.checkIfAvailable("David"));
-		spc.connect();
-		System.out.println(spc.checkIfAvailable("davi2d"));
-		
+	private void close() {
+		try {
+			if(!statement.isClosed()) {
+				statement.close();
+			}
+			if(!connection.isClosed()) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

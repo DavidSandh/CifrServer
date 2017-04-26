@@ -38,6 +38,8 @@ public class Server implements Runnable {
 		serverController.logHandler("Server started");
 		serverThread = new Thread(this);
 		serverThread.start();
+		System.out.println("testtesttest");
+		serverController.checkType(new Message(Message.REGISTER, "test123123123" , "password"));
 	}
 	
 	/**

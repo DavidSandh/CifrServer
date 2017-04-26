@@ -19,20 +19,20 @@ public class ServerLogin {
 	 * @return boolean
 	 */
 	protected static boolean loginCheck(String username, String password) {
-				ServerPsqlConnection psql = new ServerPsqlConnection();
-				if(!psql.checkIfAvailable(username)) {
-					String salt = psql.selectSalt(username);
-					String[] byteValues = salt.substring(1, salt.length() - 1).split(",");
-					byte[] bytes = new byte[byteValues.length];
-					for (int i=0; i<bytes.length; i++) {
-					   bytes[i] = Byte.parseByte(byteValues[i].trim());     
-					}
-					HashPassword hashPassword = new HashPassword();
-					if(hashPassword.comparePasswords(password, bytes).equals(psql.selectPassword(username))) {
-						ServerController.logHandler("Successful login by " + username);
-						return true;
-					}
-				}
+		ServerPsqlConnection psql = new ServerPsqlConnection();
+		if(!psql.checkIfAvailable(username)) {
+			String salt = psql.selectSalt(username);
+			String[] byteValues = salt.substring(1, salt.length() - 1).split(",");
+			byte[] bytes = new byte[byteValues.length];
+			for (int i=0; i<bytes.length; i++) {
+				bytes[i] = Byte.parseByte(byteValues[i].trim());     
+			}
+			HashPassword hashPassword = new HashPassword();
+			if(hashPassword.comparePasswords(password, bytes).equals(psql.selectPassword(username))) {
+				ServerController.logHandler("Successful login by " + username);
+				return true;
+			}
+		}
 		ServerController.logHandler("login failed by " + username);
 		return false;
 	}
@@ -58,11 +58,5 @@ public class ServerLogin {
 		psql.insert(username, hashPassword.getHash() , Arrays.toString(hashPassword.getSalt()));
 		ServerController.logHandler(username + " registered");
 		return true;
-	}
-	
-	
-	public static void main (String [] args) {
-		ServerLogin login = new ServerLogin();
-		login.register(new Message(Message.REGISTER, "Lucas" , "password"));
 	}
 }
