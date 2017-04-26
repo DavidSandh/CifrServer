@@ -78,7 +78,7 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select password from users where username = " + username + ";");
+			ResultSet rs = statement.executeQuery("select password from users where username = '" + username + "';");
 			while(rs.next()){
 				password = rs.getString("password");
 			}
@@ -96,7 +96,7 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select salt from salt where username = " + username + ";");
+			ResultSet rs = statement.executeQuery("select salt from salt where username = '" + username + "';");
 			while(rs.next()){
 				salt = rs.getString("salt");
 			}

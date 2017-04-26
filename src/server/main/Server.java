@@ -35,11 +35,10 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		serverController.logHandler("Server started");
 		serverThread = new Thread(this);
 		serverThread.start();
-		System.out.println("testtesttest");
-		serverController.checkType(new Message(Message.REGISTER, "test123123123" , "password"));
+		serverController.logHandler("Server started");
+		serverController.checkType(new Message(Message.LOGIN, "test123123123" , "password"));
 	}
 	
 	/**
