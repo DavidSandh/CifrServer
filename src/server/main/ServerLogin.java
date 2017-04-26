@@ -23,7 +23,6 @@ public class ServerLogin {
 		System.out.println(psql.checkIfAvailable(username));
 		if(!psql.checkIfAvailable(username)) {
 			String salt = psql.selectSalt(username);
-			System.out.println("felinnan");
 			String[] byteValues = salt.substring(1, salt.length() - 1).split(",");
 			byte[] bytes = new byte[byteValues.length];
 			for (int i=0; i<bytes.length; i++) {

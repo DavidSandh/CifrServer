@@ -11,8 +11,7 @@ public class ServerPsqlConnection {
 	// JDBC driver name and database URL
 	   static final String JDBC_DRIVER = "or.postgres.Driver";  
 	   static final String DB_URL = "jdbc:postgresql://pgserver.mah.se/cifr2";
-
-	   //  Database credentials
+	   //Database credentials
 	   static final String USER = "ag7713";
 	   static final String PASS = "5mf10n4r";
 	   
@@ -23,22 +22,18 @@ public class ServerPsqlConnection {
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			connection.setAutoCommit(false);
 		}catch(Exception e){
-			e.printStackTrace();
 			System.err.println(e.getClass().getName()+": "+e.getMessage());
 		}
-		 System.out.println("Opened database successfully");
-		 
 	}
 	
 	public void insert(String username, String password, String salt){
-		username.toLowerCase();
 		connect();
 		try {
 			statement = connection.createStatement();
-			String command = "insert into users (username, password) values ('" + username +"', '" + password + "')";
+			String command = "insert into users (username, password) values ('" + username.toLowerCase() +"', '" + password + "')";
 			statement.executeUpdate(command);
 			System.out.println(command);
-			command = "insert into salt (username, salt) values ('" + username +"', '" + salt + "')";
+			command = "insert into salt (username, salt) values ('" + username.toLowerCase() +"', '" + salt + "')";
 			statement.executeUpdate(command);
 			System.out.println(command);
 	         connection.commit();
