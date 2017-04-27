@@ -52,11 +52,11 @@ public class ServerLogin {
 		}
 		HashPassword hashPassword = null;
 		try {
-			hashPassword = new HashPassword(message.getPassword());
+			hashPassword = new HashPassword(message.getData());
 		} catch (Exception e) {
 			
 		}
-		psql.insert(username, hashPassword.getHash() , Arrays.toString(hashPassword.getSalt()));
+		psql.insertRegister(username, hashPassword.getHash() , Arrays.toString(hashPassword.getSalt()));
 		ServerController.logHandler(username + " registered");
 		return true;
 	}

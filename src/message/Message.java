@@ -11,15 +11,16 @@ import java.util.Date;
  */
 public class Message implements Serializable {
 	
-	public static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3;
+	public static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3, SEARCH = 4, CONTACTLIST_ADD = 5, CONTACTLIST_REMOVE = 6, CONTACTLIST = 7;
 	private Object image;
 	private String sender;
 	private String recipient;
 	private String username;
-	private String password;
+	private String data;
 	private boolean status;
 	private Date date;
 	private int type;
+	private String[] contactList;
 	
 	/**
 	 *  Constructor add all information and put date when sent.
@@ -29,21 +30,30 @@ public class Message implements Serializable {
 	 */
 	public Message(int type, String sender, String recipient, Object image) {
 		this.sender = sender;
-		this.type = 1;
+		this.type = type;
 		this.recipient = recipient;
 		this.image= image;
 		this.date = new Date();
 	}
 	
-	public Message(int type, String username, String password) {
+	public Message(int type, String username, String data) {
 		this.username = username;
-		this.password = password;
+		this.data = data;
 		this.type = type;
 	}
 	
 	public Message(int type, boolean status) {
 		this.status = status;
 		this.type = type;
+	}
+	
+	public Message(int type, String username) {
+		this.type = type;
+		this.username = username;
+	}
+	public Message(int type, String[] contactList) {
+		this.type = type;
+		this.contactList = contactList;
 	}
 	
 	/**
@@ -99,8 +109,8 @@ public class Message implements Serializable {
 	 * returns password
 	 * @return password
 	 */
-	public String getPassword() {
-		return password;
+	public String getData() {
+		return data;
 	}
 	
 	/**
@@ -109,5 +119,8 @@ public class Message implements Serializable {
 	 */
 	public boolean getStatus() {
 		return status;
+	}
+	public String[] getContactList() {
+		return contactList;
 	}
 }

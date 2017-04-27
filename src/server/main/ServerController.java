@@ -53,14 +53,21 @@ public class ServerController {
 	protected Message checkType(Object object) {
 		Message message = (Message) object;
 
-		if(message.getType() == 0) {
-			return new Message(Message.LOGIN, ServerLogin.loginCheck(message.getUsername(), message.getPassword()));
-		} else if(message.getType() == 1) {
+		if(message.getType() == Message.LOGIN) {
+			return new Message(Message.LOGIN, ServerLogin.loginCheck(message.getUsername(), message.getData()));
+		} else if(message.getType() == Message.REGISTER) {
 			return new Message(Message.REGISTER, ServerLogin.register(message));
-		} else if (message.getType() == 2) {
+		} else if (message.getType() == Message.MESSAGE) {
 
 			ServerMessageHandler.put(message.getRecipient(), message);
 			//ska notifiera användaren att nytt medelande finns
+		}else if (message.getType() == Message.SEARCH) {
+			ServerPsqlConnection psql = new ServerPsqlConnection();
+			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));
+		}else if (message.getType() == Message.CONTACTLIST_ADD) {
+			ServerPsqlConnection psql = new ServerPsqlConnection();
+			psql.insertContatList(message.getUsername(), message.getData());
+			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
 		}
 		return null;
 	}

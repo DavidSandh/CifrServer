@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import message.Message;
 
 /**
@@ -38,7 +40,6 @@ public class Server implements Runnable {
 		serverThread = new Thread(this);
 		serverThread.start();
 		serverController.logHandler("Server started");
-		serverController.checkType(new Message(Message.LOGIN, "test123123123" , "password"));
 	}
 	
 	/**

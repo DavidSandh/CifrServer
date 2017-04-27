@@ -1,4 +1,5 @@
 package server.main;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,7 +27,7 @@ public class ServerPsqlConnection {
 		}
 	}
 	
-	public void insert(String username, String password, String salt){
+	public void insertRegister(String username, String password, String salt){
 		connect();
 		try {
 			statement = connection.createStatement();
@@ -98,8 +99,65 @@ public class ServerPsqlConnection {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			close();
 		}
 		return salt;
+	}
+	
+	public String searchUsername(String username) {
+		connect();
+		try{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select username from users where username = '"+username + "';");
+			while(rs.next()){
+				return rs.getString("username");
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return null;
+	}
+	
+	public void insertContatList(String username, String userToAdd) {
+		connect();
+		try{
+			statement = connection.createStatement();
+			String command = "insert into kontaktlista (user1, user2) values ('" + username.toLowerCase() +"', '" + userToAdd.toLowerCase() + "')";
+			statement.executeUpdate(command);
+	        connection.commit();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close();
+		}
+	}
+	
+	public String[] getContactList(String username) {
+		connect();
+		String[] result = null;
+		try{
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			String command = "select user2 from kontaktlista where user1 = '"+username.toLowerCase() +"';";
+			ResultSet rs = statement.executeQuery(command);
+			if(rs.last()) {
+				result = new String[rs.getRow()];
+				rs.beforeFirst();
+				int i = 0;
+				while(rs.next()) {
+					result[i] = rs.getString("user2");
+					i++;
+				}
+			}
+			return result;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return null;
 	}
 	
 	private void close() {
