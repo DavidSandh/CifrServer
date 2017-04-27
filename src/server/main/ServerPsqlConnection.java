@@ -5,7 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+/**
+ * 
+ * @author Lucas Knutsäter & David Sandh
+ *
+ */
 public class ServerPsqlConnection {
 	private Connection connection;
 	private Statement statement = null;
