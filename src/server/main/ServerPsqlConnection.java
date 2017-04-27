@@ -35,10 +35,10 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			String command = "insert into users (username, password) values ('" + username.toLowerCase() +"', '" + password + "')";
+			String command = "INSERT INTO users (username, password) VALUES ('" + username.toLowerCase() +"', '" + password + "')";
 			statement.executeUpdate(command);
 			System.out.println(command);
-			command = "insert into salt (username, salt) values ('" + username.toLowerCase() +"', '" + salt + "')";
+			command = "INSERT INTO salt (username, salt) VALUES ('" + username.toLowerCase() +"', '" + salt + "')";
 			statement.executeUpdate(command);
 			System.out.println(command);
 	         connection.commit();
@@ -55,7 +55,7 @@ public class ServerPsqlConnection {
 		connect();
 		try{
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select username from users where username = '" + name +"';");
+			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '" + name +"';");
 			while(rs.next()){
 				String checkUsername = rs.getString("username");
 				if(checkUsername.equals(username)) {
@@ -78,7 +78,7 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select password from users where username = '" + username + "';");
+			ResultSet rs = statement.executeQuery("SELECT password FROM users WHERE username = '" + username + "';");
 			while(rs.next()){
 				password = rs.getString("password");
 			}
@@ -96,7 +96,7 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select salt from salt where username = '" + username + "';");
+			ResultSet rs = statement.executeQuery("SELECT salt FROM salt WHERE username = '" + username + "';");
 			while(rs.next()){
 				salt = rs.getString("salt");
 			}
@@ -113,7 +113,7 @@ public class ServerPsqlConnection {
 		connect();
 		try{
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select username from users where username = '"+username + "';");
+			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '"+username + "';");
 			while(rs.next()){
 				return rs.getString("username");
 			}	
@@ -125,11 +125,11 @@ public class ServerPsqlConnection {
 		return null;
 	}
 	
-	public void insertContatList(String username, String userToAdd) {
+	public void insertContactList(String username, String userToAdd) {
 		connect();
 		try{
 			statement = connection.createStatement();
-			String command = "insert into kontaktlista (user1, user2) values ('" + username.toLowerCase() +"', '" + userToAdd.toLowerCase() + "')";
+			String command = "INSERT INTO kontaktlista (user1, user2) VALUES ('" + username.toLowerCase() +"', '" + userToAdd.toLowerCase() + "')";
 			statement.executeUpdate(command);
 	        connection.commit();
 		} catch(SQLException e) {
@@ -139,12 +139,26 @@ public class ServerPsqlConnection {
 		}
 	}
 	
+	public void removeFromContactList(String username, String userToRemove){
+		connect();
+		try{
+			statement = connection.createStatement();
+			String command = "DELETE FROM kontaktlista WHERE user1 ='" + username +"' AND user2 = '" + userToRemove +"';";
+			statement.executeUpdate(command);
+			connection.commit();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			close();
+		}
+	}
+	
 	public String[] getContactList(String username) {
 		connect();
 		String[] result = null;
 		try{
 			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String command = "select user2 from kontaktlista where user1 = '"+username.toLowerCase() +"';";
+			String command = "SELECT user2 FROM kontaktlista WHERE user1 = '"+username.toLowerCase() +"';";
 			ResultSet rs = statement.executeQuery(command);
 			if(rs.last()) {
 				result = new String[rs.getRow()];

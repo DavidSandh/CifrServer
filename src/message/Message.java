@@ -42,9 +42,16 @@ public class Message implements Serializable {
 		this.type = type;
 	}
 	
+	public Message(int type, boolean status, String[] contactList) {
+		this.status = status;
+		this.type = type;
+		this.contactList=contactList;
+	}
+	
 	public Message(int type, boolean status) {
 		this.status = status;
 		this.type = type;
+		
 	}
 	
 	public Message(int type, String username) {
