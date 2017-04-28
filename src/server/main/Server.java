@@ -39,7 +39,7 @@ public class Server implements Runnable {
 		}
 		serverThread = new Thread(this);
 		serverThread.start();
-		serverController.logHandler("Server started");
+		ServerController.logHandler("Server started");
 	}
 	
 	protected void sendNotification(String username) {
@@ -49,6 +49,7 @@ public class Server implements Runnable {
 				do{
 					message = ServerMessageHandler.remove(username);
 					clientList.get(i).writeMessage(message);
+					ServerController.logHandler("Sent message to " + username);
 				}while(message != null);
 			}
 		}
