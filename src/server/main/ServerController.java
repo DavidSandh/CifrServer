@@ -59,15 +59,19 @@ public class ServerController {
 	protected Message checkType(Object object) {
 		Message message = (Message) object;
 		ServerPsqlConnection psql = new ServerPsqlConnection();
+		System.out.println("tog emot message");
 		if (message.getType() == Message.LOGIN) {
 			return new Message(Message.LOGIN, ServerLogin.loginCheck(message.getUsername(), message.getData()),
 					psql.getContactList(message.getUsername()));	
 		} else if (message.getType() == Message.REGISTER) {
 			return new Message(Message.REGISTER, ServerLogin.register(message));
 		} else if (message.getType() == Message.MESSAGE) {
+			System.out.println("Lägger in message i handlern");
 			ServerMessageHandler.put(message.getRecipient(), message);
 			// ska notifiera användaren att nytt medelande finns
+			System.out.println("Lagt till i handlern.");
 			server.sendNotification(message.getRecipient());
+			System.out.println("Skickat notification");
 		} else if (message.getType() == Message.SEARCH) {
 
 			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));
