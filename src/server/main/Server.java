@@ -43,6 +43,7 @@ public class Server implements Runnable {
 	}
 	
 	protected void sendNotification(String username) {
+		System.out.println("i send notification");
 		for(int i = 0; i < clientList.size(); i++) {
 			System.out.println(clientList.get(i).getUsername());
 			if(clientList.get(i).getUsername().equals(username)) {
