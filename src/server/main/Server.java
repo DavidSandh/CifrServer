@@ -149,15 +149,13 @@ public class Server implements Runnable {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
-					break;
-				}finally{
 					try {
-						if(username != null) {
-							removeUser(username);
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
+						removeUser(username);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
+					break;
 				}
 			}
 		}
