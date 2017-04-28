@@ -49,7 +49,6 @@ public class Server implements Runnable {
 			if(clientList.get(i).getUsername().equals(username)) {
 				Message message = ServerMessageHandler.remove(username);
 				while(message != null) {
-					message = ServerMessageHandler.remove(username);
 					clientList.get(i).writeMessage(message);
 					ServerController.logHandler("Sent message to " + username);
 					message = ServerMessageHandler.remove(username);
