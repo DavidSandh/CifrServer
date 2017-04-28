@@ -58,7 +58,7 @@ public class ServerPsqlConnection {
 			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '" + name +"';");
 			while(rs.next()){
 				String checkUsername = rs.getString("username");
-				if(checkUsername.equals(username)) {
+				if(checkUsername.equals(name)) {
 					System.out.println(checkUsername);
 					close();
 					return false;
@@ -78,7 +78,7 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT password FROM users WHERE username = '" + username + "';");
+			ResultSet rs = statement.executeQuery("SELECT password FROM users WHERE username = '" + username.toLowerCase() + "';");
 			while(rs.next()){
 				password = rs.getString("password");
 			}
@@ -96,7 +96,7 @@ public class ServerPsqlConnection {
 		connect();
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT salt FROM salt WHERE username = '" + username + "';");
+			ResultSet rs = statement.executeQuery("SELECT salt FROM salt WHERE username = '" + username.toLowerCase() + "';");
 			while(rs.next()){
 				salt = rs.getString("salt");
 			}
