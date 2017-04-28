@@ -61,13 +61,13 @@ public class ServerController {
 		ServerPsqlConnection psql = new ServerPsqlConnection();
 		if (message.getType() == Message.LOGIN) {
 			return new Message(Message.LOGIN, ServerLogin.loginCheck(message.getUsername(), message.getData()),
-					psql.getContactList(message.getUsername()));
+					psql.getContactList(message.getUsername()));	
 		} else if (message.getType() == Message.REGISTER) {
 			return new Message(Message.REGISTER, ServerLogin.register(message));
 		} else if (message.getType() == Message.MESSAGE) {
-
 			ServerMessageHandler.put(message.getRecipient(), message);
 			// ska notifiera användaren att nytt medelande finns
+			server.sendNotification(message.getRecipient());
 		} else if (message.getType() == Message.SEARCH) {
 
 			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));

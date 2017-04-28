@@ -19,7 +19,7 @@ public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private int port;
 	private Thread serverThread;
-	private ArrayList<ClientHandler> clienList = new ArrayList<ClientHandler>();
+	private ArrayList<ClientHandler> clientList = new ArrayList<ClientHandler>();
 	private ServerController serverController;
 	private boolean serverStatus;
 	
@@ -40,6 +40,30 @@ public class Server implements Runnable {
 		serverThread = new Thread(this);
 		serverThread.start();
 		serverController.logHandler("Server started");
+	}
+	
+	protected void sendNotification(String username) {
+		for(int i = 0; i < clientList.size(); i++) {
+			if(clientList.get(i).getUsername().equals(username)) {
+				Message message = null;
+				do{
+					message = ServerMessageHandler.remove(username);
+					clientList.get(i).writeMessage(message);
+				}while(message != null);
+			}
+		}
+	}
+	/**
+	 * Method which removes a user from list
+	 * @param username username to remove
+	 * @throws IOException
+	 */
+	public void removeUser(String username) throws IOException {
+		for(int i = 0; i < clientList.size(); i++) {
+			if(clientList.get(i).username.equals(username)) {
+				clientList.remove(i);
+			}
+		}
 	}
 	
 	/**
@@ -72,7 +96,7 @@ public class Server implements Runnable {
 				Socket socket = serverSocket.accept();
 				ClientHandler newCLient = new ClientHandler(socket);
 				newCLient.start();
-				clienList.add(newCLient);
+				clientList.add(newCLient);
 			}
 		} catch (Exception e) {
 
@@ -87,6 +111,7 @@ public class Server implements Runnable {
 	private class ClientHandler extends Thread {
 		private ObjectOutputStream output;
 		private ObjectInputStream input;
+		private String username = null;
 		/**
 		 * Controller which opens new streams
 		 * @param socket Socket which to open stream on.
@@ -108,6 +133,10 @@ public class Server implements Runnable {
 			while (!Thread.interrupted()) {
 				try {
 					message = (Object)input.readObject();
+					//Behöver möjligtvis skrivas om.
+					if(username == null && ((Message) message).getUsername() != null) {
+						username = ((Message) message).getUsername();
+					}
 					Message messageReturn = serverController.checkType(message);
 					if(messageReturn != null) {
 						writeMessage(messageReturn);
@@ -117,7 +146,13 @@ public class Server implements Runnable {
 				} catch (IOException e) {
 					e.printStackTrace();
 					break;
-				} 
+				}finally{
+					try {
+						removeUser(username);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		
@@ -131,6 +166,10 @@ public class Server implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		protected String getUsername() {
+			return username;
 		}
 	}
 }
