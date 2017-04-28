@@ -149,7 +149,9 @@ public class Server implements Runnable {
 					break;
 				}finally{
 					try {
-						removeUser(username);
+						if(username != null) {
+							removeUser(username);
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
