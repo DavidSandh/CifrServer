@@ -60,27 +60,22 @@ public class ServerController {
 		Message message = (Message) object;
 		ServerPsqlConnection psql = new ServerPsqlConnection();
 		System.out.println("tog emot message");
-		if (message.getType() == Message.LOGIN) {
+		int type = message.getType();
+		switch (type) {
+		case Message.LOGIN :
 			return new Message(Message.LOGIN, ServerLogin.loginCheck(message.getUsername(), message.getData()),
-					psql.getContactList(message.getUsername()));	
-		} else if (message.getType() == Message.REGISTER) {
+					psql.getContactList(message.getUsername()));
+		case Message.REGISTER : 
 			return new Message(Message.REGISTER, ServerLogin.register(message));
-		} else if (message.getType() == Message.MESSAGE) {
-			System.out.println("Lägger in message i handlern");
+		case Message.MESSAGE :
 			ServerMessageHandler.put(message.getRecipient(), message);
-			// ska notifiera användaren att nytt medelande finns
-			System.out.println("Lagt till i handlern.");
 			server.sendNotification(message.getRecipient());
-			System.out.println("Skickat notification");
-		} else if (message.getType() == Message.SEARCH) {
-
+		case Message.SEARCH : 
 			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));
-		} else if (message.getType() == Message.CONTACTLIST_ADD) {
-
+		case Message.CONTACTLIST_ADD :
 			psql.insertContactList(message.getUsername(), message.getData());
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
-		} else if (message.getType() == Message.CONTACTLIST_REMOVE) {
-
+		case Message.CONTACTLIST_REMOVE : 
 			psql.removeFromContactList(message.getUsername(), message.getData());
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
 		}
