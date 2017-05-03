@@ -71,7 +71,7 @@ public class ServerController {
 			ServerMessageHandler.put(message.getRecipient(), message);
 			server.sendNotification(message.getRecipient());
 		case Message.SEARCH : 
-			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));
+			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername().toLowerCase()));
 		case Message.CONTACTLIST_ADD :
 			psql.insertContactList(message.getUsername(), message.getData());
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));

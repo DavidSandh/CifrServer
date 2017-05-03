@@ -50,14 +50,13 @@ public class ServerPsqlConnection {
 	}
 	
 	public boolean checkIfAvailable(String username){
-		String name = username.toLowerCase();
 		connect();
 		try{
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '" + name +"';");
+			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '" + username.toLowerCase() +"';");
 			while(rs.next()){
 				String checkUsername = rs.getString("username");
-				if(checkUsername.equals(name)) {
+				if(checkUsername.equals(username.toLowerCase())) {
 					System.out.println(checkUsername);
 					close();
 					return false;
@@ -112,7 +111,7 @@ public class ServerPsqlConnection {
 		connect();
 		try{
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '"+username + "';");
+			ResultSet rs = statement.executeQuery("SELECT username FROM users WHERE username = '"+username.toLowerCase() + "';");
 			while(rs.next()){
 				return rs.getString("username");
 			}	
