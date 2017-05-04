@@ -1,6 +1,9 @@
-package server.main;
+package server.start;
 
 import java.io.IOException;
+
+import server.connection.Server;
+import server.main.ServerController;
 /**
  * Starts the server.
  * @author David Sandh, Lucas Knutsäter

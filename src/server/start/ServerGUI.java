@@ -1,4 +1,4 @@
-package server.main;
+package server.start;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import server.main.ServerController;
 
 /**
  * A simple GUI to monitor the server (connections, registrations etc).
@@ -69,14 +71,14 @@ public class ServerGUI extends JPanel{
 	 * Recieves a ServerController object.
 	 * @param serverController
 	 */
-	protected void addController(ServerController serverController) {
+	public void addController(ServerController serverController) {
 		this.serverController = serverController;
 	}
 	/**
 	 * Shows messages (from the LogHandler for example) in the textArea.
 	 * @param message
 	 */
-	protected void append(String message) {
+	 public void append(String message) {
 		LocalDateTime now = LocalDateTime.now();
 		logTextArea.append(now.getHour() + ":" + now.getMinute() + ":"+ now.getSecond() + " " + message + "\n");
 	}

@@ -1,7 +1,10 @@
-package server.main;
+package psql;
 
 import java.util.Arrays;
+
+import hash.HashPassword;
 import message.Message;
+import server.main.ServerController;
 /**
  * ServerLogin gets a username and password from a client and checks to see if registering
  * and/or login is possible.
@@ -15,7 +18,7 @@ public class ServerLogin {
 	 * @param password Password to login with
 	 * @return boolean
 	 */
-	protected static boolean loginCheck(String username, String password) {
+	public static boolean loginCheck(String username, String password) {
 		ServerPsqlConnection psql = new ServerPsqlConnection();
 		System.out.println(psql.checkIfAvailable(username));
 		if(!psql.checkIfAvailable(username)) {
@@ -40,7 +43,7 @@ public class ServerLogin {
 	 * @param message object containing username and password
 	 * @return boolean
 	 */
-	protected static boolean register(Message message) {
+	public static boolean register(Message message) {
 		String username = message.getUsername();
 		ServerPsqlConnection psql = new ServerPsqlConnection();
 		if(!psql.checkIfAvailable(username)) {

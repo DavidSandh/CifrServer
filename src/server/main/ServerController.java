@@ -6,6 +6,10 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import message.Message;
+import psql.ServerLogin;
+import psql.ServerPsqlConnection;
+import server.connection.Server;
+import server.start.ServerGUI;
 
 /**
  * ServerController
@@ -22,7 +26,7 @@ public class ServerController {
 	 * @param server instance of Server
 	 * @param serverGUI instance of ServerGUI
 	 */
-	protected ServerController(Server server, ServerGUI serverGUI) {
+	public ServerController(Server server, ServerGUI serverGUI) {
 		this.server = server;
 		this.serverGUI = serverGUI;
 		serverGUI.addController(this);
@@ -33,14 +37,14 @@ public class ServerController {
 	/**
 	 * Runs method in server that starts the server.
 	 */
-	protected void startServer() {
+	public void startServer() {
 		server.startServer();
 	}
 
 	/**
 	 * runs method in server that stops the server.
 	 */
-	protected void stopServer() {
+	public void stopServer() {
 		server.stopServer();
 	}
 
@@ -50,7 +54,7 @@ public class ServerController {
 	 * @param object object to check type on
 	 * @return message to return
 	 */
-	protected Message checkType(Object object) {
+	public Message checkType(Object object) {
 		Message message = (Message) object;
 		ServerPsqlConnection psql = new ServerPsqlConnection();
 		System.out.println("tog emot message");
@@ -101,7 +105,7 @@ public class ServerController {
 	 * Logs message
 	 * @param logMessage Message to log
 	 */
-	protected static void logHandler(String logMessage) {
+	public static void logHandler(String logMessage) {
 		log.info(logMessage + "\n");
 		serverGUI.append(logMessage);
 	}

@@ -1,4 +1,4 @@
-package server.main;
+package hash;
 
 
 import java.security.MessageDigest;
@@ -48,7 +48,7 @@ public class HashPassword {
 		return generatedPassword;
 	}
 	
-	protected String comparePasswords(String passwordtoCompare, byte[] bytes){
+	public String comparePasswords(String passwordtoCompare, byte[] bytes){
 		return getSecurePassword(passwordtoCompare, bytes);
 	}
 	
@@ -68,11 +68,11 @@ public class HashPassword {
 		return salt;
 	}
 	
-	protected String getHash() {
+	public String getHash() {
 		return hash;
 	}
 	
-	protected byte[] getSalt() {
+	public byte[] getSalt() {
 		return salt;
 	}
 }

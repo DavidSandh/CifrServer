@@ -1,4 +1,4 @@
-package server.main;
+package psql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

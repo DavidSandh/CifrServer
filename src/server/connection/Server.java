@@ -1,4 +1,4 @@
-package server.main;
+package server.connection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import message.Message;
+import server.main.ServerController;
+import server.main.ServerMessageHandler;
+import server.start.ServerGUI;
 
 /**
  * Server that handles client connections.
@@ -29,7 +32,7 @@ public class Server implements Runnable {
 	/**
 	 * makes a serverSocket on port and starts server.
 	 */
-	protected void startServer() {
+	public void startServer() {
 		serverStatus = true;
 		try {
 			serverSocket = new ServerSocket(port);
@@ -44,7 +47,7 @@ public class Server implements Runnable {
 	 * Checks if username is in clientlist. If it is sends all messages in ServerMessegeHandler to the user.
 	 * @param username username to send messages to.
 	 */
-	protected void sendNotification(String username) {
+	public void sendNotification(String username) {
 		System.out.println("i send notification");
 		for(int i = 0; i < clientList.size(); i++) {
 			System.out.println(clientList.get(i).getUsername());
@@ -76,14 +79,14 @@ public class Server implements Runnable {
 	 * Adds a controller to this class.
 	 * @param serverController controller to add
 	 */
-	protected void addController(ServerController serverController) {
+	public void addController(ServerController serverController) {
 		this.serverController = serverController;
 	}
 	/**
 	 * Stops the server.
 	 * Closes the socket and makes serverThread null.
 	 */
-	protected void stopServer() {
+	public void stopServer() {
 		try {
 			serverStatus = false;
 			serverSocket.close();

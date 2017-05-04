@@ -29,7 +29,7 @@ public class ServerMessageHandler {
 	 * @param username HashMap key
 	 * @return message Message to return. Null if no message to return.
 	 */
-	protected static Message remove(String username) {
+	public static Message remove(String username) {
 		ArrayList<Message> tempList = messageBuffer.get(username);
 		if(!tempList.isEmpty()) {
 			return tempList.remove(0);
