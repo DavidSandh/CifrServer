@@ -77,6 +77,8 @@ public class ServerController {
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
 		case Message.CONTACTLIST_REMOVE : 
 			psql.removeFromContactList(message.getUsername(), message.getData());
+			ServerMessageHandler.put(message.getData(), new Message(Message.CONTACTLIST, psql.getContactList(message.getData())));
+			server.sendNotification(message.getData());
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
 		}
 		return null;
