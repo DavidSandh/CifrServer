@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import message.Message;
 
 /**
- * Server that waits for a client to connect.
+ * Server that handles client connections.
  * @author Lucas Knutsäter & David Sandh
  *
  */
@@ -27,7 +27,7 @@ public class Server implements Runnable {
 	}
 	
 	/**
-	 * Method starts the server.
+	 * makes a serverSocket on port and starts server.
 	 */
 	protected void startServer() {
 		serverStatus = true;
@@ -40,7 +40,10 @@ public class Server implements Runnable {
 		serverThread.start();
 		ServerController.logHandler("Server started");
 	}
-	
+	/**
+	 * Checks if username is in clientlist. If it is sends all messages in ServerMessegeHandler to the user.
+	 * @param username username to send messages to.
+	 */
 	protected void sendNotification(String username) {
 		System.out.println("i send notification");
 		for(int i = 0; i < clientList.size(); i++) {
@@ -56,7 +59,7 @@ public class Server implements Runnable {
 		}
 	}
 	/**
-	 * Method which removes a user from list
+	 * removes username from clientlist.
 	 * @param username username to remove
 	 * @throws IOException
 	 */
@@ -71,7 +74,7 @@ public class Server implements Runnable {
 	
 	/**
 	 * Adds a controller to this class.
-	 * @param serverController which controller to add.
+	 * @param serverController controller to add
 	 */
 	protected void addController(ServerController serverController) {
 		this.serverController = serverController;
@@ -107,7 +110,7 @@ public class Server implements Runnable {
 	}
 	
 	/**
-	 * inner class which handles clients.
+	 * Class handles individual clients
 	 * @author Lucas Knutsäter & David Sandh
 	 *
 	 */
@@ -117,7 +120,7 @@ public class Server implements Runnable {
 		private String username = null;
 		/**
 		 * Controller which opens new streams
-		 * @param socket Socket which to open stream on.
+		 * @param socket Socket to open stream on.
 		 */
 		public ClientHandler(Socket socket) {
 			try {
@@ -129,7 +132,8 @@ public class Server implements Runnable {
 			}
 		}
 		/**
-		 * Placeholder method. Was used for demo. Will be removed/remade.
+		 * Run method which waits for input from client. Then sends the recieved object to serverController.checkType
+		 * 
 		 */
 		public void run() {
 			Object message;
@@ -151,7 +155,6 @@ public class Server implements Runnable {
 					try {
 						removeUser(username);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					break;
@@ -160,8 +163,8 @@ public class Server implements Runnable {
 		}
 		
 		/**
-		 * Placeholder method. Was used for demo. Will b e removed/remade.
-		 * @param message
+		 * writeObject to client with message
+		 * @param message message to send to client
 		 */
 		private void writeMessage(Message message) {
 			try {
@@ -170,7 +173,10 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
+		/**
+		 * get username
+		 * @return username returns username of client
+		 */
 		protected String getUsername() {
 			return username;
 		}

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import message.Message;
 
  /**
-  * 
+  * A buffer which contains ArrayLists of messages in a HashMap
   * @author David Sandh & Lucas Knutsäter
   *
   */
@@ -13,9 +13,9 @@ public class ServerMessageHandler {
 	private static HashMap<String, ArrayList<Message>> messageBuffer = new HashMap<String, ArrayList<Message>>();
 	
 	/**
-	 * 
-	 * @param username
-	 * @param message
+	 * Puts a message in the ArrayList in the HashMap with key username
+	 * @param username HashMap key 
+	 * @param message Message to add
 	 */
 	protected static void put(String username, Message message) {
 		if (!messageBuffer.containsKey(username)) {
@@ -25,9 +25,9 @@ public class ServerMessageHandler {
 	}
 	
 	/**
-	 * 
-	 * @param username
-	 * @return
+	 * Removes a message in the ArrayList in the HashMap with key username
+	 * @param username HashMap key
+	 * @return message Message to return. Null if no message to return.
 	 */
 	protected static Message remove(String username) {
 		ArrayList<Message> tempList = messageBuffer.get(username);

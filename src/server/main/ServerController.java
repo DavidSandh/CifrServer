@@ -9,9 +9,7 @@ import message.Message;
 
 /**
  * ServerController
- * 
  * @author Lucas Knutsäter & David Sandh
- *
  */
 public class ServerController {
 	private Server server;
@@ -21,11 +19,8 @@ public class ServerController {
 
 	/**
 	 * Constructor which adds controller to serverGUI and server
-	 * 
-	 * @param server
-	 *            instance of Server
-	 * @param serverGUI
-	 *            instance of ServerGUI
+	 * @param server instance of Server
+	 * @param serverGUI instance of ServerGUI
 	 */
 	protected ServerController(Server server, ServerGUI serverGUI) {
 		this.server = server;
@@ -36,14 +31,14 @@ public class ServerController {
 	}
 
 	/**
-	 * method to start server
+	 * Runs method in server that starts the server.
 	 */
 	protected void startServer() {
 		server.startServer();
 	}
 
 	/**
-	 * method to stop server
+	 * runs method in server that stops the server.
 	 */
 	protected void stopServer() {
 		server.stopServer();
@@ -52,8 +47,7 @@ public class ServerController {
 	/**
 	 * Check what type object is
 	 * 
-	 * @param object
-	 *            object to check
+	 * @param object object to check type on
 	 * @return message to return
 	 */
 	protected Message checkType(Object object) {
@@ -85,7 +79,7 @@ public class ServerController {
 	}
 
 	/**
-	 * Method to start logging
+	 * starts the logger and saves log in log/
 	 */
 	private void startLog() {
 		log = Logger.getLogger("Log");
@@ -104,10 +98,8 @@ public class ServerController {
 	}
 
 	/**
-	 * Method to add log message
-	 * 
-	 * @param logMessage
-	 *            Message to log
+	 * Logs message
+	 * @param logMessage Message to log
 	 */
 	protected static void logHandler(String logMessage) {
 		log.info(logMessage + "\n");
