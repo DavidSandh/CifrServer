@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * 
- * @author Viktor
+ * A simple GUI to monitor the server (connections, registrations etc).
+ * @author Viktor Ekström
  *
  */
 public class ServerGUI extends JPanel{
@@ -22,7 +22,9 @@ public class ServerGUI extends JPanel{
 	private JTextArea logTextArea = new JTextArea();
 	private Font font = new Font("Arial", Font.PLAIN,22);
 	private ServerController serverController;
-	
+/**
+ * Constructor for the ServerGUI class.
+ */
 	public ServerGUI() {
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(800,600));
@@ -30,7 +32,10 @@ public class ServerGUI extends JPanel{
 		add(buttonPanel(), BorderLayout.NORTH);
 		showFrame();
 	}
-	
+	/**
+	 * Creates a JPanel-object and returns it.
+	 * @return JPanel
+	 */
 	private JPanel mainPanel(){
 		JPanel panel = new JPanel();
 		logTextArea.setPreferredSize(new Dimension(600,500));
@@ -38,7 +43,9 @@ public class ServerGUI extends JPanel{
 		panel.add(logTextArea);
 		return panel;
 	}
-	
+	/**
+	 * Shows the frame
+	 */
 	private void showFrame() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +53,10 @@ public class ServerGUI extends JPanel{
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+	/**
+	 * Creates a panel with a Start/Stop-button.
+	 * @return JPanel
+	 */
 	private JPanel buttonPanel() {
 		JPanel panel = new JPanel();
 		btnStartStop.addActionListener(listener);
@@ -55,16 +65,26 @@ public class ServerGUI extends JPanel{
 		panel.add(btnStartStop);
 		return panel;
 	}
-	
+	/**
+	 * Recieves a ServerController object.
+	 * @param serverController
+	 */
 	protected void addController(ServerController serverController) {
 		this.serverController = serverController;
 	}
-
+	/**
+	 * Shows messages (from the LogHandler for example) in the textArea.
+	 * @param message
+	 */
 	protected void append(String message) {
 		LocalDateTime now = LocalDateTime.now();
 		logTextArea.append(now.getHour() + ":" + now.getMinute() + ":"+ now.getSecond() + " " + message + "\n");
 	}
-	
+	/**
+	 * Inner listener-class for the Start/Stop button
+	 * @author Viktor Ekström
+	 *
+	 */
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == btnStartStop) {

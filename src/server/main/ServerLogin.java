@@ -2,7 +2,12 @@ package server.main;
 
 import java.util.Arrays;
 import message.Message;
-
+/**
+ * ServerLogin gets a username and password from a client and checks to see if registering
+ * and/or login is possible.
+ * @author David Sandh, Lucas Knutsäter.
+ *
+ */
 public class ServerLogin {
 	/**
 	 * Check if login is possible

@@ -5,7 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 /**
- * 
+ * ServerPsqlConnection connects the server to a psql database that stores usernames, hashed passwords, salts and
+ * contact lists.
  * @author Lucas Knutsäter & David Sandh
  *
  */
@@ -19,7 +20,9 @@ public class ServerPsqlConnection {
 	   static final String USER = "ag7713";
 	   static final String PASS = "5mf10n4r";
 	   
-	
+	/**
+	 * Connects the server to the psql-database.
+	 */
 	public void connect(){
 		try{
 			Class.forName("org.postgresql.Driver");
@@ -29,7 +32,12 @@ public class ServerPsqlConnection {
 			System.err.println(e.getClass().getName()+": "+e.getMessage());
 		}
 	}
-	
+	/**
+	 * Takes a username, password and salt as arguments and inserts these into the psql-database.
+	 * @param username
+	 * @param password
+	 * @param salt
+	 */
 	public void insertRegister(String username, String password, String salt){
 		connect();
 		try {
@@ -48,7 +56,11 @@ public class ServerPsqlConnection {
 			close();
 		}
 	}
-	
+	/**
+	 * Takes a String and attempts to select it from the database. If no such string exists it returns true, else it returns false.
+	 * @param username
+	 * @return true if there is no matching string in the database, else false.
+	 */
 	public boolean checkIfAvailable(String username){
 		connect();
 		try{
@@ -70,7 +82,11 @@ public class ServerPsqlConnection {
 		}
 		return false;
 	}
-	
+	/**
+	 * Takes a username as an argument and attempts to select the hash-value connected to this username.
+	 * @param username
+	 * @return password
+	 */
 	public String selectPassword(String username){
 		String password = null;
 		connect();
@@ -88,7 +104,11 @@ public class ServerPsqlConnection {
 		}
 		return password;
 	}
-	
+	/**
+	 * Takes a username as an argument and attempts to select the salt used for producing a hash-value.
+	 * @param username
+	 * @return salt
+	 */
 	public String selectSalt(String username){
 		String salt = null;
 		connect();
@@ -106,7 +126,12 @@ public class ServerPsqlConnection {
 		}
 		return salt;
 	}
-	
+	/**
+	 * Takes a username as an argument and attempts to select it from the database.
+	 * If no such username exists it returns null.
+	 * @param username
+	 * @return null if no username exists, else username
+	 */
 	public String searchUsername(String username) {
 		connect();
 		try{
@@ -122,7 +147,11 @@ public class ServerPsqlConnection {
 		}
 		return null;
 	}
-	
+	/**
+	 * Takes a username and a userToAdd and inserts these as a set of values in the database.
+	 * @param username
+	 * @param userToAdd
+	 */
 	public void insertContactList(String username, String userToAdd) {
 		connect();
 		try{
@@ -136,7 +165,11 @@ public class ServerPsqlConnection {
 			close();
 		}
 	}
-	
+	/**
+	 * Takes a username and a userToAdd as arguments and removes this dataset from the database.
+	 * @param username
+	 * @param userToRemove
+	 */
 	public void removeFromContactList(String username, String userToRemove){
 		connect();
 		try{
@@ -150,7 +183,12 @@ public class ServerPsqlConnection {
 			close();
 		}
 	}
-	
+	/**
+	 * Takes a username as an argument and returns all corresponding users from the contactlist in the database. 
+	 * If there is none, returns null
+	 * @param username
+	 * @return String[] with usernames if these exist, else null.
+	 */
 	public String[] getContactList(String username) {
 		connect();
 		String[] result = null;
@@ -175,7 +213,9 @@ public class ServerPsqlConnection {
 		}
 		return null;
 	}
-	
+	/**
+	 * Closes all statements and connections to the database.
+	 */
 	private void close() {
 		try {
 			if(!statement.isClosed()) {
