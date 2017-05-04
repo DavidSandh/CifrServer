@@ -79,7 +79,10 @@ public class Server implements Runnable {
 	protected void addController(ServerController serverController) {
 		this.serverController = serverController;
 	}
-
+	/**
+	 * Stops the server.
+	 * Closes the socket and makes serverThread null.
+	 */
 	protected void stopServer() {
 		try {
 			serverStatus = false;
