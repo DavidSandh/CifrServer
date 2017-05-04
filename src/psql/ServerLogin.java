@@ -20,7 +20,6 @@ public class ServerLogin {
 	 */
 	public static boolean loginCheck(String username, String password) {
 		ServerPsqlConnection psql = new ServerPsqlConnection();
-		System.out.println(psql.checkIfAvailable(username));
 		if(!psql.checkIfAvailable(username)) {
 			String salt = psql.selectSalt(username);
 			String[] byteValues = salt.substring(1, salt.length() - 1).split(",");

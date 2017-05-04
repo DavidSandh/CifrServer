@@ -17,7 +17,7 @@ public class ServerMessageHandler {
 	 * @param username HashMap key 
 	 * @param message Message to add
 	 */
-	protected static void put(String username, Message message) {
+	public static void put(String username, Message message) {
 		if (!messageBuffer.containsKey(username)) {
 			messageBuffer.put(username, new ArrayList<Message>());
 		}

@@ -57,7 +57,6 @@ public class ServerController {
 	public Message checkType(Object object) {
 		Message message = (Message) object;
 		ServerPsqlConnection psql = new ServerPsqlConnection();
-		System.out.println("tog emot message");
 		int type = message.getType();
 		switch (type) {
 		case Message.LOGIN :

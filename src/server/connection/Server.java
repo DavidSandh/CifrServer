@@ -48,9 +48,7 @@ public class Server implements Runnable {
 	 * @param username username to send messages to.
 	 */
 	public void sendNotification(String username) {
-		System.out.println("i send notification");
 		for(int i = 0; i < clientList.size(); i++) {
-			System.out.println(clientList.get(i).getUsername());
 			if(clientList.get(i).getUsername().equals(username)) {
 				Message message = ServerMessageHandler.remove(username);
 				while(message != null) {
@@ -67,7 +65,6 @@ public class Server implements Runnable {
 	 * @throws IOException
 	 */
 	public void removeUser(String username) throws IOException {
-		System.out.print("tar bort användare " + username);
 		for(int i = 0; i < clientList.size(); i++) {
 			if(clientList.get(i).username.equals(username)) {
 				clientList.remove(i);

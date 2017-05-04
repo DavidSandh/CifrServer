@@ -44,10 +44,8 @@ public class ServerPsqlConnection {
 			statement = connection.createStatement();
 			String command = "INSERT INTO users (username, password) VALUES ('" + username.toLowerCase() +"', '" + password + "')";
 			statement.executeUpdate(command);
-			System.out.println(command);
 			command = "INSERT INTO salt (username, salt) VALUES ('" + username.toLowerCase() +"', '" + salt + "')";
 			statement.executeUpdate(command);
-			System.out.println(command);
 	         connection.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -69,7 +67,6 @@ public class ServerPsqlConnection {
 			while(rs.next()){
 				String checkUsername = rs.getString("username");
 				if(checkUsername.equals(username.toLowerCase())) {
-					System.out.println(checkUsername);
 					close();
 					return false;
 				}
