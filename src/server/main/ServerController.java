@@ -68,14 +68,17 @@ public class ServerController {
 			ServerMessageHandler.put(message.getRecipient(), message);
 			server.sendNotification(message.getRecipient());
 		case Message.SEARCH : 
+			ServerController.logHandler(message.getSender() +" searched for " + message.getUsername());
 			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));
 		case Message.CONTACTLIST_ADD :
 			psql.insertContactList(message.getUsername(), message.getData());
+			ServerController.logHandler(message.getUsername() +" added " + message.getData() + " from contactlist");
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
 		case Message.CONTACTLIST_REMOVE : 
 			psql.removeFromContactList(message.getUsername(), message.getData());
 			ServerMessageHandler.put(message.getData(), new Message(Message.CONTACTLIST, psql.getContactList(message.getData())));
 			server.sendNotification(message.getData());
+			ServerController.logHandler(message.getUsername() +" removed " + message.getData() + " from contactlist");
 			return new Message(Message.CONTACTLIST, psql.getContactList(message.getUsername()));
 		}
 		return null;
