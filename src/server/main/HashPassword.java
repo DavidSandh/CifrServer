@@ -6,7 +6,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
-
+/**
+ * This class takes a String argument and produces a 128-bit hash value.
+ * @author Lokesh Gupta. https://www.facebook.com/howtodoinjava
+ * Code was retrieved from http://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
+ *
+ */
 public class HashPassword {
 	private byte[] salt;
 	private String hash;
