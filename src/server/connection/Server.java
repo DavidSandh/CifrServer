@@ -65,10 +65,12 @@ public class Server implements Runnable {
 	 * @throws IOException
 	 */
 	public void removeUser(String username) throws IOException {
-		for(int i = 0; i < clientList.size(); i++) {
-			if(clientList.get(i).username.equals(username)) {
-				clientList.remove(i);
-				ServerController.logHandler(username + " disconnected");
+		if(!(username == null)) {
+			for(int i = 0; i < clientList.size(); i++) {
+				if(clientList.get(i).username.equals(username)) {
+					clientList.remove(i);
+					ServerController.logHandler(username + " disconnected");
+				}
 			}
 		}
 	}
