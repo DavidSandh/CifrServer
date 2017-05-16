@@ -95,6 +95,14 @@ public class Message implements Serializable {
     public String getDate() {
         return new SimpleDateFormat("dd/MM - hh:mm").format(date);
     }
+    
+    /**
+     * Returns the date object.
+     * @return date
+     */
+    public Date getDateObject() {
+        return date;
+    }
 
     /**
      * returns Type.
