@@ -67,9 +67,10 @@ public class ServerController {
 		case Message.MESSAGE :
 			ServerMessageHandler.put(message.getRecipient(), message);
 			server.sendNotification(message.getRecipient());
+			break;
 		case Message.SEARCH : 
-			ServerController.logHandler(message.getSender() +" searched for " + message.getUsername());
-			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));
+			ServerController.logHandler(message.getUsername() +" searched for " + message.getData());
+			return new Message(Message.SEARCH, psql.searchUsername(message.getData()));
 		case Message.CONTACTLIST_ADD :
 			psql.insertContactList(message.getUsername(), message.getData());
 			ServerController.logHandler(message.getUsername() +" added " + message.getData() + " from contactlist");
