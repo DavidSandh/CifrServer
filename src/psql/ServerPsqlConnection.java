@@ -38,11 +38,11 @@ public class ServerPsqlConnection {
 	 * @param password
 	 * @param salt
 	 */
-	public void insertRegister(String username, String password, String salt){
+	public void insertRegister(String username, String password,String key, String salt){
 		connect();
 		try {
 			statement = connection.createStatement();
-			String command = "INSERT INTO users (username, password) VALUES ('" + username.toLowerCase() +"', '" + password + "')";
+			String command = "INSERT INTO users (username, password, key) VALUES ('" + username.toLowerCase() +"', '" + password + "', '" + key + "')";
 			statement.executeUpdate(command);
 			command = "INSERT INTO salt (username, salt) VALUES ('" + username.toLowerCase() +"', '" + salt + "')";
 			statement.executeUpdate(command);
@@ -191,17 +191,19 @@ public class ServerPsqlConnection {
 		String[] result = null;
 		try{
 			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String command = "SELECT user2 FROM kontaktlista WHERE user1 = '"+username.toLowerCase() +"';";
+			String command = "SELECT user2, key FROM kontaktlista as u2 JOIN users AS u ON u2.user1 = u.username WHERE u.username = '"+username.toLowerCase() +"';";
 			ResultSet rs = statement.executeQuery(command);
 			if(rs.last()) {
 				result = new String[rs.getRow()];
 				rs.beforeFirst();
 				int i = 0;
 				while(rs.next()) {
-					result[i] = rs.getString("user2");
+					result[i] = rs.getString("user2") + "|" + rs.getString("key");
+					System.out.println(result[i]);
 					i++;
 				}
 			}
+			System.out.println(result.toString());
 			return result;
 		} catch(SQLException e) {
 			e.printStackTrace();

@@ -67,6 +67,7 @@ public class ServerController {
 		case Message.MESSAGE :
 			ServerMessageHandler.put(message.getRecipient(), message);
 			server.sendNotification(message.getRecipient());
+			break;
 		case Message.SEARCH : 
 			ServerController.logHandler(message.getSender() +" searched for " + message.getUsername());
 			return new Message(Message.SEARCH, psql.searchUsername(message.getUsername()));

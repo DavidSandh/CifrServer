@@ -11,7 +11,6 @@ import java.util.Date;
  *
  */
 public class Message implements Serializable {
-
     public static final int LOGIN = 0, REGISTER = 1, MESSAGE = 2, STATUS = 3, SEARCH = 4, CONTACTLIST_ADD = 5, CONTACTLIST_REMOVE = 6, CONTACTLIST = 7;
     private Object image;
     private String sender;
@@ -22,6 +21,7 @@ public class Message implements Serializable {
     private Date date;
     private int type;
     private String[] contactList;
+    private String key;
 
     /**
      *  Constructor add all information and put date when sent.
@@ -41,6 +41,13 @@ public class Message implements Serializable {
         this.username = username;
         this.data = data;
         this.type = type;
+    }
+
+    public Message(int type, String username, String key, String data) {
+        this.username = username;
+        this.data = data;
+        this.type = type;
+        this.key = key;
     }
 
     public Message(int type, boolean status, String[] contactList) {
@@ -129,5 +136,9 @@ public class Message implements Serializable {
     }
     public String[] getContactList() {
         return contactList;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

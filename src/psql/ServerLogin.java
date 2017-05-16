@@ -43,6 +43,8 @@ public class ServerLogin {
 	 * @return boolean
 	 */
 	public static boolean register(Message message) {
+		System.out.println(message.getUsername());
+		System.out.println(message.getKey());
 		String username = message.getUsername();
 		ServerPsqlConnection psql = new ServerPsqlConnection();
 		if(!psql.checkIfAvailable(username)) {
@@ -55,7 +57,7 @@ public class ServerLogin {
 		} catch (Exception e) {
 			
 		}
-		psql.insertRegister(username, hashPassword.getHash() , Arrays.toString(hashPassword.getSalt()));
+		psql.insertRegister(username, hashPassword.getHash() ,message.getKey(), Arrays.toString(hashPassword.getSalt()));
 		ServerController.logHandler(username + " registered");
 		return true;
 	}
