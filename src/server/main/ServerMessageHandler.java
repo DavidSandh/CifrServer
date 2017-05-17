@@ -17,7 +17,7 @@ public class ServerMessageHandler {
 	 * @param username HashMap key 
 	 * @param message Message to add
 	 */
-	public static void put(String username, Message message) {
+	public synchronized static void put(String username, Message message) {
 		if (!messageBuffer.containsKey(username)) {
 			messageBuffer.put(username, new ArrayList<Message>());
 		}
@@ -29,7 +29,7 @@ public class ServerMessageHandler {
 	 * @param username HashMap key
 	 * @return message Message to return. Null if no message to return.
 	 */
-	public static Message remove(String username) {
+	public  synchronized static Message remove(String username) {
 		ArrayList<Message> tempList = messageBuffer.get(username);
 		if(!tempList.isEmpty()) {
 			return tempList.remove(0);

@@ -6,7 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Message class which contains the message being sent from and to server/client.
+ * Message class used for most of the communication between Server and Client. A variety of Message-types
+ * controls what the server does.
  * @author Lucas Knutsäter, David Sandh
  *
  */
@@ -24,41 +25,76 @@ public class Message implements Serializable {
     private String[] contactList;
 
     /**
-     *  Constructor add all information and put date when sent.
-     * @param sender Sender of message
+     * Constructor add all information and put date when sent.
+     *
+     * @param sender    Sender of message
      * @param recipient Recipient of message
-     * @param image image to send
+     * @param image     image to send
      */
     public Message(int type, String sender, String recipient, Object image) {
         this.sender = sender;
         this.type = type;
         this.recipient = recipient;
-        this.image= image;
+        this.image = image;
         this.date = new Date();
     }
 
+    /**
+     * Constructs a message with a type, username and a String "data" that is used for different purposes
+     * depending on the type parameter.
+     *
+     * @param type
+     * @param username
+     * @param data
+     */
     public Message(int type, String username, String data) {
         this.username = username;
         this.data = data;
         this.type = type;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param type
+     * @param status
+     * @param contactList
+     */
     public Message(int type, boolean status, String[] contactList) {
         this.status = status;
         this.type = type;
-        this.contactList=contactList;
+        this.contactList = contactList;
     }
 
+    /**
+     * Constructor used to notify client whether a request is valid or not.
+     *
+     * @param type
+     * @param status
+     */
     public Message(int type, boolean status) {
         this.status = status;
         this.type = type;
 
     }
 
+    /**
+     * Constructor used for a variety of purposes.
+     *
+     * @param type
+     * @param username
+     */
     public Message(int type, String username) {
         this.type = type;
         this.username = username;
     }
+
+    /**
+     * Constructor used to return a contact list to the CLient.
+     *
+     * @param type
+     * @param contactList
+     */
     public Message(int type, String[] contactList) {
         this.type = type;
         this.contactList = contactList;
@@ -66,6 +102,7 @@ public class Message implements Serializable {
 
     /**
      * returns image
+     *
      * @return image in message
      */
     public Object getImage() {
@@ -74,6 +111,7 @@ public class Message implements Serializable {
 
     /**
      * returns sender
+     *
      * @return sender of message
      */
     public String getSender() {
@@ -82,6 +120,7 @@ public class Message implements Serializable {
 
     /**
      * returns recipient
+     *
      * @return recipient of message
      */
     public String getRecipient() {
@@ -90,14 +129,17 @@ public class Message implements Serializable {
 
     /**
      * returns Date object
+     *
      * @return Date object
      */
     public String getDate() {
+        //ska nog göras om till att retunera tid istället och inte objektet.
         return new SimpleDateFormat("dd/MM - hh:mm").format(date);
     }
-    
+
     /**
      * Returns the date object.
+     *
      * @return date
      */
     public Date getDateObject() {
@@ -106,6 +148,7 @@ public class Message implements Serializable {
 
     /**
      * returns Type.
+     *
      * @return type to return
      */
     public int getType() {
@@ -114,6 +157,7 @@ public class Message implements Serializable {
 
     /**
      * returns username
+     *
      * @return username
      */
     public String getUsername() {
@@ -122,6 +166,7 @@ public class Message implements Serializable {
 
     /**
      * returns password
+     *
      * @return password
      */
     public String getData() {
@@ -130,11 +175,18 @@ public class Message implements Serializable {
 
     /**
      * returns status
+     *
      * @return status
      */
     public boolean getStatus() {
         return status;
     }
+
+    /**
+     * returns contactList
+     *
+     * @return
+     */
     public String[] getContactList() {
         return contactList;
     }

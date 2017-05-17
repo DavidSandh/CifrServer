@@ -43,18 +43,28 @@ public class Server implements Runnable {
 		serverThread.start();
 		ServerController.logHandler("Server started");
 	}
+	public synchronized ClientHandler getClientList(int index) {
+		return clientList.get(index);
+	}
+	public synchronized void removeClientList(int index) {
+		clientList.remove(index);
+	}
 	/**
 	 * Checks if username is in clientlist. If it is sends all messages in ServerMessegeHandler to the user.
 	 * @param username username to send messages to.
 	 */
 	public void sendNotification(String username) {
 		for(int i = 0; i < clientList.size(); i++) {
+<<<<<<< HEAD
 			System.out.println(username);
 			System.out.println(clientList.get(i).getUsername());
 			if(clientList.get(i).username.equals(username)) {
+=======
+			if(getClientList(i).getUsername().equals(username)) {
+>>>>>>> origin/master
 				Message message = ServerMessageHandler.remove(username);
 				while(message != null) {
-					clientList.get(i).writeMessage(message);
+					getClientList(i).writeMessage(message);
 					ServerController.logHandler("Sent message to " + username);
 					message = ServerMessageHandler.remove(username);
 				}
@@ -69,8 +79,8 @@ public class Server implements Runnable {
 	public void removeUser(String username) throws IOException {
 		if(!(username == null)) {
 			for(int i = 0; i < clientList.size(); i++) {
-				if(clientList.get(i).username.equals(username)) {
-					clientList.remove(i);
+				if(getClientList(i).username.equals(username)) {
+					removeClientList(i);
 					ServerController.logHandler(username + " disconnected");
 				}
 			}
