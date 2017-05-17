@@ -55,13 +55,9 @@ public class Server implements Runnable {
 	 */
 	public void sendNotification(String username) {
 		for(int i = 0; i < clientList.size(); i++) {
-<<<<<<< HEAD
 			System.out.println(username);
 			System.out.println(clientList.get(i).getUsername());
 			if(clientList.get(i).username.equals(username)) {
-=======
-			if(getClientList(i).getUsername().equals(username)) {
->>>>>>> origin/master
 				Message message = ServerMessageHandler.remove(username);
 				while(message != null) {
 					getClientList(i).writeMessage(message);
