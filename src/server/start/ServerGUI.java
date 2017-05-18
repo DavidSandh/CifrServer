@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import server.main.ServerController;
@@ -22,6 +23,7 @@ public class ServerGUI extends JPanel{
 	private ButtonListener listener = new ButtonListener();
 	private JButton btnStartStop = new JButton("Start server");
 	private JTextArea logTextArea = new JTextArea();
+	private JScrollPane scrollPaneLog = new JScrollPane(logTextArea);
 	private Font font = new Font("Arial", Font.PLAIN,22);
 	private ServerController serverController;
 /**
@@ -40,9 +42,12 @@ public class ServerGUI extends JPanel{
 	 */
 	private JPanel mainPanel(){
 		JPanel panel = new JPanel();
-		logTextArea.setPreferredSize(new Dimension(600,500));
+		logTextArea.setEditable(false);
+		scrollPaneLog.setPreferredSize(new Dimension(600,500));
+		scrollPaneLog.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneLog.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panel.setPreferredSize(new Dimension(800,600));
-		panel.add(logTextArea);
+		panel.add(scrollPaneLog);
 		return panel;
 	}
 	/**
@@ -84,8 +89,6 @@ public class ServerGUI extends JPanel{
 	}
 	/**
 	 * Inner listener-class for the Start/Stop button
-	 * @author Viktor Ekström
-	 *
 	 */
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
