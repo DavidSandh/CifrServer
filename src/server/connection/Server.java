@@ -101,7 +101,7 @@ public class Server implements Runnable {
 			serverThread.interrupt();
 			serverThread = null;
 		} catch (IOException e) {
-			serverController.logHandler("Server already closed /n");
+			ServerController.logHandler("Server already closed /n");
 		}
 	}
 	

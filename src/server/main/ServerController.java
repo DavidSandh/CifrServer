@@ -28,7 +28,7 @@ public class ServerController {
 	 */
 	public ServerController(Server server, ServerGUI serverGUI) {
 		this.server = server;
-		this.serverGUI = serverGUI;
+		ServerController.serverGUI = serverGUI;
 		serverGUI.addController(this);
 		server.addController(this);
 		startLog();
