@@ -48,7 +48,6 @@ public class ServerPsqlConnection {
 			statement.executeUpdate(command);
 	         connection.commit();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			close();
