@@ -24,6 +24,7 @@ public class Server implements Runnable {
 	private ArrayList<ClientHandler> clientList = new ArrayList<ClientHandler>();
 	private ServerController serverController;
 	private boolean serverStatus;
+	private static int uniqueId;
 	
 	public Server(int port, ServerGUI viewer) {
 		this.port = port;
@@ -55,9 +56,8 @@ public class Server implements Runnable {
 	 */
 	public void sendNotification(String username) {
 		for(int i = 0; i < clientList.size(); i++) {
-			System.out.println(username);
-			System.out.println(clientList.get(i).getUsername());
-			if(clientList.get(i).username.equals(username)) {
+			String user = clientList.get(i).username;
+			if(user != null && username.equals(user)) {
 				Message message = ServerMessageHandler.remove(username);
 				while(message != null) {
 					getClientList(i).writeMessage(message);
@@ -69,16 +69,14 @@ public class Server implements Runnable {
 	}
 	/**
 	 * removes username from clientlist.
-	 * @param username username to remove
+	 * @param id, String username username to remove
 	 * @throws IOException
 	 */
-	public void removeUser(String username) throws IOException {
-		if(!(username == null)) {
-			for(int i = 0; i < clientList.size(); i++) {
-				if(getClientList(i).username.equals(username)) {
-					removeClientList(i);
-					ServerController.logHandler(username + " disconnected");
-				}
+	public void removeUser(int id, String username) throws IOException {
+		for(int i = 0; i < clientList.size(); i++) {
+			if(getClientList(i).id == id) {
+				removeClientList(i);
+				ServerController.logHandler(username + " disconnected");
 			}
 		}
 	}
@@ -131,12 +129,15 @@ public class Server implements Runnable {
 	private class ClientHandler extends Thread {
 		private ObjectOutputStream output;
 		private ObjectInputStream input;
-		private String username = null;
+		private String username;
+		int id;
 		/**
 		 * Controller which opens new streams
 		 * @param socket Socket to open stream on.
 		 */
 		public ClientHandler(Socket socket) {
+			id = ++uniqueId;
+			username = "" + id;
 			try {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
@@ -154,7 +155,6 @@ public class Server implements Runnable {
 			while (!Thread.interrupted()) {
 				try {
 					message = (Object)input.readObject();
-					//Behöver möjligtvis skrivas om.
 					if(username == null && ((Message) message).getUsername() != null) {
 						username = ((Message) message).getUsername();
 					}
@@ -167,7 +167,7 @@ public class Server implements Runnable {
 				} catch (IOException e) {
 					e.printStackTrace();
 					try {
-						removeUser(username);
+						removeUser(id, username);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
