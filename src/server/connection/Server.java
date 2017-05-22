@@ -155,7 +155,7 @@ public class Server implements Runnable {
 			while (!Thread.interrupted()) {
 				try {
 					message = (Object)input.readObject();
-					if(username == null && ((Message) message).getUsername() != null) {
+					if(username.equals(id) && ((Message) message).getUsername() != null) {
 						username = ((Message) message).getUsername();
 					}
 					Message messageReturn = serverController.checkType(message);
