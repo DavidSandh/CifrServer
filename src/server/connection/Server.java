@@ -137,7 +137,7 @@ public class Server implements Runnable {
 		 */
 		public ClientHandler(Socket socket) {
 			id = ++uniqueId;
-			username = "" + id;
+			username = Integer.toString(id);
 			try {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
@@ -155,7 +155,7 @@ public class Server implements Runnable {
 			while (!Thread.interrupted()) {
 				try {
 					message = (Object)input.readObject();
-					if(username.equals(id) && ((Message) message).getUsername() != null) {
+					if(username.equals(Integer.toString(id)) && ((Message) message).getUsername() != null) {
 						username = ((Message) message).getUsername();
 					}
 					Message messageReturn = serverController.checkType(message);
