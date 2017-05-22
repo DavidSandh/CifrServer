@@ -65,6 +65,7 @@ public class ServerController {
 		case Message.REGISTER : 
 			return new Message(Message.REGISTER, ServerLogin.register(message));
 		case Message.MESSAGE :
+			ServerController.logHandler(message.getSender() +" sent message to " + message.getRecipient());
 			ServerMessageHandler.put(message.getRecipient(), message);
 			server.sendNotification(message.getRecipient());
 			break;
